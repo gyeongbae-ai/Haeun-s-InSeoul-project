@@ -26,6 +26,16 @@ const schools = [
     links: [["입학처", "https://admission.seoultech.ac.kr/"], ["2027 모집요강", "https://ipsi.theschools.co.kr/cne_s/4/947.pdf"], ["입시결과", "https://admission.seoultech.ac.kr/"]]
   },
   {
+    id: "kookmin", short: "국민대", name: "국민대학교", tone: "#f0c49d", focus: "국민프런티어 · 교과우수자",
+    summary: "국민프런티어는 1단계 서류 100%(3배수), 2단계 1단계 70% + 면접 30%로 선발하며 수능최저가 없습니다. 관심 모집단위는 지능형ICT융합전공·융합바이오공학과·임산생명공학과입니다.",
+    dates: ["원서 9.7 10:00 ~ 9.11 18:00", "1단계 11.17 14:00", "자연계 면접 11.21", "인문·예체능 면접 11.22", "최초합격 12.18 17:00"],
+    links: [
+      ["2027 모집요강", "https://admission.kookmin.ac.kr/nonschedule/notice.php?ctype=view&no=1070&page=1"],
+      ["2026 경쟁률", "https://admission.kookmin.ac.kr/nonschedule/previousResult.php"],
+      ["전년도 입시결과", "https://cs.u-is.co.kr/kmu/intro.htm"]
+    ]
+  },
+  {
     id: "ssu", short: "숭실대", name: "숭실대학교", tone: "#cab5ed", focus: "SSU미래인재(면접형) · 논술우수자",
     summary: "미래인재 면접형은 서류 100%(3~3.5배수) 후 1단계 50% + 면접 50%. 논술우수자는 논술 80% + 학생부교과 20%입니다.",
     dates: ["원서 9.8 10:00 ~ 9.11 18:00", "논술 11.21", "1단계 11.23", "면접 11.27 ~ 11.28", "최초합격 12.18 10:00"],
@@ -76,6 +86,7 @@ const baseEvents = [
   ["2026-09-07", "seoultech", "서울과기대 원서접수 시작", "09:00 시작 · 9.11 18:00 마감"],
   ["2026-09-07", "mju", "명지대 원서접수 시작", "10:00 시작 · 9.11 17:00 마감"],
   ["2026-09-07", "hansung", "한성대 원서접수 기간", "9.7~9.11 · 지원 전 입학처 최종 모집요강 확인"],
+  ["2026-09-07", "kookmin", "국민대 원서접수 시작", "10:00 시작 · 9.11 18:00 마감 · 국민프런티어 지원 정보 최종 확인"],
   ["2026-09-08", "cau", "중앙대 원서접수 시작", "10:00 시작 · 9.11 18:00 마감"],
   ["2026-09-08", "ssu", "숭실대 원서접수 시작", "10:00 시작 · 9.11 18:00 마감"],
   ["2026-09-14", "mju", "명지대 서류제출 마감", "마감일 우체국 접수분까지 인정"],
@@ -84,8 +95,11 @@ const baseEvents = [
   ["2026-09-17", "seoultech", "서울과기대 서류제출 마감", "17:00 · 등기우편 소인 유효"],
   ["2026-10-31", "mju", "명지대 교과면접", "인문캠퍼스(서울) 진행"],
   ["2026-11-20", "seoultech", "서울과기대 1단계 발표", "14:00 · 학생부종합 전체"],
+  ["2026-11-17", "kookmin", "국민대 국민프런티어 1단계 발표", "14:00 예정 · 2단계 고사장 안내"],
   ["2026-11-21", "konkuk", "건국대 KU논술우수자 논술", "고사시간은 모집단위별 수험생 안내 확인"],
+  ["2026-11-21", "kookmin", "국민대 국민프런티어 자연계 면접", "지정시간 · 지능형ICT·융합바이오 등 자연계 모집단위"],
   ["2026-11-21", "ssu", "숭실대 논술우수자 논술", "수험생 유의사항 11.17 공개"],
+  ["2026-11-22", "kookmin", "국민대 국민프런티어 인문·예체능 면접", "경영대학 자연계 모집단위 포함 · 지정시간"],
   ["2026-11-23", "seoultech", "서울과기대 논술고사", "10:00 시작 예정"],
   ["2026-11-23", "ssu", "숭실대 면접형 1단계 발표", "SSU미래인재·기회균형·SW우수자"],
   ["2026-11-26", "cau", "중앙대 탐구형 1단계 발표", "14:00"],
@@ -100,6 +114,7 @@ const baseEvents = [
   ["2026-12-09", "mju", "명지대 최초합격 발표", "15:00"],
   ["2026-12-18", "cau", "중앙대 최초합격 발표", "14:00"],
   ["2026-12-18", "seoultech", "서울과기대 최초합격 발표", "14:00 · 실기 외 전체"],
+  ["2026-12-18", "kookmin", "국민대 최초합격 발표", "17:00 예정"],
   ["2026-12-18", "ssu", "숭실대 최초합격 발표", "10:00"],
   ["2026-12-18", "hansung", "한성대 수시 합격 발표 기한", "한성인재는 면접 없이 서류 100%"],
   ["2026-12-21", "personal", "수시 최초합격자 문서등록", "대학별 등록 마감시각 확인 · 12.23까지"]
@@ -110,6 +125,22 @@ const portals = [
   ["학생부 성적 HTML", "학생부 성적을 입력하고 HTML 파일로 내려받기", "https://www.adiga.kr/mpg/sga/ssa/schoolScoreMngeView.do?menuId=PCMPGSGA1001", "성적 관리 열기"],
   ["학생부 입력 가이드", "HTML 다운로드 전 입력 방법부터 확인", "https://www.adiga.kr/sco/sca/schScoAnlsPopup.do?guideType=student", "가이드 보기"],
   ["50% · 70% 컷", "대학별 전형 결과와 합격선 확인", "https://www.adiga.kr/uct/acd/ade/criteriaAndResultView.do?menuId=PCUCTACD2000", "컷 확인하기"]
+];
+
+const cutoffRows = [
+  { school:"중앙대", tone:"#ef9fc4", type:"탐구형인재", major:"화학공학과", cut50:"5.68", cut70:"5.86" },
+  { school:"중앙대", tone:"#ef9fc4", type:"탐구형인재", major:"융합공학부", cut50:"3.80", cut70:"5.50" },
+  { school:"건국대", tone:"#a9d9c8", type:"KU논술우수자", major:"화공·생명·에너지공학부", cut50:"2.04", cut70:"2.12" },
+  { school:"건국대", tone:"#a9d9c8", type:"KU논술우수자", major:"첨단바이오공학부", cut50:"2.17", cut70:"3.75" },
+  { school:"건국대", tone:"#a9d9c8", type:"KU논술우수자", major:"생물공학과", cut50:"1.96", cut70:"2.08" },
+  { school:"건국대", tone:"#a9d9c8", type:"KU논술우수자", major:"KU자유전공학부", cut50:"2.70", cut70:"3.27" },
+  { school:"국민대", tone:"#f0c49d", type:"국민프런티어", major:"지능형ICT융합전공", cut50:"2.77", cut70:"2.83" },
+  { school:"국민대", tone:"#f0c49d", type:"국민프런티어", major:"융합바이오공학과", cut50:"2.51", cut70:"2.59" },
+  { school:"국민대", tone:"#f0c49d", type:"국민프런티어", major:"임산생명공학과", cut50:"2.59", cut70:"2.66" },
+  { school:"서울과기대", tone:"#9fc8ef", type:"기회균형(기회균등)", major:"신소재공학과", cut50:"4.74", cut70:"4.74" },
+  { school:"서울과기대", tone:"#9fc8ef", type:"창의융합인재", major:"바이오메디컬학과", cut50:"6.72", cut70:"6.77" },
+  { school:"서울과기대", tone:"#9fc8ef", type:"학교생활우수자", major:"스마트ICT융합공학과", cut50:"2.58", cut70:"2.61" },
+  { school:"서울과기대", tone:"#9fc8ef", type:"학교생활우수자", major:"화공생명공학과", cut50:"2.65", cut70:"4.40" }
 ];
 
 const scoreSubjects = ["국어", "수학", "영어", "탐구1", "탐구2"];
@@ -134,7 +165,21 @@ function renderEssay() { document.querySelector("#essaySteps").innerHTML = essay
 function renderScores() { const saved = store.get("haeun-scores-v2", {}); document.querySelector("#scoreGrid").innerHTML = scoreSubjects.map((s) => `<label class="score-card"><span>${s}</span><select data-score="${s}">${[1,2,3,4,5].map((g) => `<option value="${g}" ${String(g) === (saved[s] || "2") ? "selected" : ""}>${g}등급</option>`).join("")}</select></label>`).join(""); }
 function renderSchools() { document.querySelector("#schoolGrid").innerHTML = schools.map((s) => `<article class="school-card" style="--tone:${s.tone}"><div class="school-head"><div><span class="school-kicker">${s.short}</span><h3>${s.name}</h3><p>${s.focus}</p></div><span class="dot"></span></div><p class="school-summary">${s.summary}</p><ul>${s.dates.map((d) => `<li>${d}</li>`).join("")}</ul><div class="link-row">${s.links.map(([l,h]) => `<a href="${h}" target="_blank" rel="noreferrer">${l}</a>`).join("")}</div></article>`).join(""); }
 function renderFilters() { document.querySelector("#schoolFilters").innerHTML = `<button class="filter-button active" data-school="all">전체</button>${schools.map((s) => `<button class="filter-button" style="--tone:${s.tone}" data-school="${s.id}"><span class="color-swatch" aria-hidden="true"></span>${s.short}</button>`).join("")}`; document.querySelector("#eventSchool").innerHTML = `${schools.map((s) => `<option value="${s.id}">${s.short}</option>`).join("")}<option value="personal">개인 공통</option>`; }
-function events() { return [...baseEvents.map(([date,schoolId,title,memo]) => ({ id:`${date}-${schoolId}-${title}`, date, school:schoolId, title, memo, custom:false })), ...customEvents].sort((a,b) => a.date.localeCompare(b.date)); }
+function events() { return [...baseEvents.map(([date,schoolId,title,memo], index) => ({ id:`base-${index}`, date, school:schoolId, title, memo, custom:false })), ...customEvents].sort((a,b) => a.date.localeCompare(b.date)); }
+function eventCategory(title) {
+  if (title.includes("원서접수")) return "원서접수";
+  if (title.includes("서류제출") || title.includes("서류 업로드")) return "서류제출";
+  if (title.includes("1단계 발표")) return "1단계 합격발표";
+  if (title.includes("면접")) return "면접";
+  if (title.includes("논술")) return "논술";
+  if (title.includes("합격") && title.includes("발표")) return "최종 합격발표";
+  if (title.includes("등록")) return "등록";
+  return "기타 일정";
+}
+function renderDetailSchedule(list) {
+  const grouped = [...schools, { id:"personal", short:"개인", name:"개인 공통 일정", tone:"#d9b8ef", links:[] }].map((item) => ({ school:item, items:list.filter((event) => event.school === item.id) })).filter((group) => group.items.length);
+  document.querySelector("#detailSchedule").innerHTML = grouped.length ? grouped.map(({school:s,items}) => `<article class="detail-school" style="--tone:${s.tone}"><header class="detail-school-head"><div><h4>${escapeHtml(s.name)}</h4><p>${items.length}개의 주요 일정</p></div>${s.links?.[0] ? `<a href="${s.links[0][1]}" target="_blank" rel="noreferrer">모집요강 ↗</a>` : ""}</header><ol class="detail-list">${items.map((event) => `<li class="detail-event" id="detail-${event.id}" data-detail-event="${event.id}" data-detail-date="${event.date}" style="--tone:${s.tone}"><time class="detail-date">${event.date.slice(5).replace("-", ".")}</time><span class="detail-category">${eventCategory(event.title)}</span><h5>${escapeHtml(event.title)}</h5><p>${escapeHtml(event.memo)}</p></li>`).join("")}</ol></article>`).join("") : `<p class="detail-empty">선택한 학교의 일정이 아직 없습니다.</p>`;
+}
 function renderTimeline() {
   const year = calendarCursor.getFullYear();
   const month = calendarCursor.getMonth();
@@ -150,12 +195,14 @@ function renderTimeline() {
     const key = dateKey(day);
     const dayEvents = grouped[key] || [];
     const classes = ["calendar-day", day.getMonth() === month ? "" : "outside", key === dateKey(new Date()) ? "today" : ""].filter(Boolean).join(" ");
-    const entries = dayEvents.slice(0, 3).map((event) => { const s = school(event.school); const shortTitle = event.title.replace(s.short, "").trim(); return `<div class="calendar-event" style="--tone:${s.tone}" title="${escapeHtml(`${event.title} · ${event.memo}`)}"><b>${escapeHtml(s.short)}</b><span>${escapeHtml(shortTitle)}</span>${event.custom ? `<button type="button" data-delete-event="${event.id}" aria-label="${escapeHtml(event.title)} 삭제">×</button>` : ""}</div>`; }).join("");
-    return `<div class="${classes}" data-date="${key}"><span class="day-number">${day.getDate()}</span><div class="day-events">${entries}${dayEvents.length > 3 ? `<span class="more-events">+${dayEvents.length-3}개 더보기</span>` : ""}</div></div>`;
+    const entries = dayEvents.slice(0, 3).map((event) => { const s = school(event.school); const shortTitle = event.title.replace(s.short, "").trim(); return `<div class="calendar-event" style="--tone:${s.tone}" title="${escapeHtml(`${event.title} · ${event.memo}`)}"><button class="event-jump" type="button" data-event-jump="${event.id}" aria-label="${escapeHtml(event.title)} 상세 일정 보기"><b>${escapeHtml(s.short)}</b><span>${escapeHtml(shortTitle)}</span></button>${event.custom ? `<button type="button" data-delete-event="${event.id}" aria-label="${escapeHtml(event.title)} 삭제">×</button>` : ""}</div>`; }).join("");
+    return `<div class="${classes}" data-date="${key}"><span class="day-number">${day.getDate()}</span><div class="day-events">${entries}${dayEvents.length > 3 ? `<button class="more-events" type="button" data-date-jump="${key}">+${dayEvents.length-3}개 더보기</button>` : ""}</div></div>`;
   }).join("");
+  renderDetailSchedule(visibleEvents);
 }
 function renderTasks() { document.querySelector("#taskList").innerHTML = tasks.length ? tasks.map((t) => `<article class="task-item ${t.done ? "done" : ""}"><input type="checkbox" data-task-check="${t.id}" ${t.done ? "checked" : ""} aria-label="완료 체크" /><div><strong>${t.title}</strong><p>${t.area}${t.due ? ` · ${formatDate(t.due)}` : ""}</p></div><button type="button" data-task-delete="${t.id}" aria-label="계획 삭제">삭제</button></article>`).join("") : `<p class="empty">아직 저장한 계획이 없어요.</p>`; }
 function renderPortals() { document.querySelector("#portalGrid").innerHTML = portals.map(([t,d,h,l],i) => `<article class="portal-card"><span>0${i+1}</span><h3>${t}</h3><p>${d}</p><a href="${h}" target="_blank" rel="noreferrer">${l} ↗</a></article>`).join(""); }
+function renderCutoffs() { document.querySelector("#cutoffTable").innerHTML = cutoffRows.map((row) => `<tr style="--tone:${row.tone}"><td class="cutoff-school"><span aria-hidden="true"></span>${row.school}</td><td class="cutoff-type">${row.type}</td><td>${row.major}</td><td class="cutoff-score">${row.cut50}등급</td><td class="cutoff-score">${row.cut70}등급</td></tr>`).join(""); }
 
 const tabNames = new Set(["interview", "essay", "schools", "calendar", "tasks", "sources"]);
 function openTab(name, { updateHash = true, scroll = false } = {}) {
@@ -181,6 +228,8 @@ document.addEventListener("click", (event) => {
   const tabLink = event.target.closest("[data-open-tab]"); if (tabLink) { event.preventDefault(); openTab(tabLink.dataset.openTab, { scroll:true }); }
   if (event.target.closest("#calendarPrev")) { calendarCursor = new Date(calendarCursor.getFullYear(), calendarCursor.getMonth()-1, 1); renderTimeline(); }
   if (event.target.closest("#calendarNext")) { calendarCursor = new Date(calendarCursor.getFullYear(), calendarCursor.getMonth()+1, 1); renderTimeline(); }
+  const eventJump = event.target.closest("[data-event-jump]"); if (eventJump) { const detail = document.querySelector(`[data-detail-event="${eventJump.dataset.eventJump}"]`); if (detail) { detail.scrollIntoView({ behavior:"smooth", block:"center" }); detail.classList.add("jump-highlight"); setTimeout(() => detail.classList.remove("jump-highlight"), 2200); } }
+  const dateJump = event.target.closest("[data-date-jump]"); if (dateJump) { const detail = document.querySelector(`[data-detail-date="${dateJump.dataset.dateJump}"]`); if (detail) { detail.scrollIntoView({ behavior:"smooth", block:"center" }); document.querySelectorAll(`[data-detail-date="${dateJump.dataset.dateJump}"]`).forEach((item) => { item.classList.add("jump-highlight"); setTimeout(() => item.classList.remove("jump-highlight"), 2200); }); } }
   const filter = event.target.closest("[data-school]"); if (filter) { activeSchool = filter.dataset.school; document.querySelectorAll(".filter-button").forEach((b) => b.classList.toggle("active", b.dataset.school === activeSchool)); renderTimeline(); }
   const de = event.target.closest("[data-delete-event]"); if (de) { customEvents = customEvents.filter((e) => e.id !== de.dataset.deleteEvent); store.set("haeun-events-v2", customEvents); renderTimeline(); }
   const dt = event.target.closest("[data-task-delete]"); if (dt) { tasks = tasks.filter((t) => t.id !== dt.dataset.taskDelete); store.set("haeun-tasks-v2", tasks); renderTasks(); }
@@ -200,4 +249,4 @@ document.addEventListener("change", (event) => {
   if (event.target.matches("[data-task-check]")) { tasks = tasks.map((t) => t.id === event.target.dataset.taskCheck ? {...t, done:event.target.checked} : t); store.set("haeun-tasks-v2", tasks); renderTasks(); }
 });
 
-renderDday(); renderInterview(); renderEssay(); renderScores(); renderSchools(); renderFilters(); renderTimeline(); renderTasks(); renderPortals(); openTab(location.hash.slice(1), { updateHash:false });
+renderDday(); renderInterview(); renderEssay(); renderScores(); renderSchools(); renderFilters(); renderTimeline(); renderTasks(); renderPortals(); renderCutoffs(); openTab(location.hash.slice(1), { updateHash:false });

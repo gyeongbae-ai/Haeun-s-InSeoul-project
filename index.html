@@ -89,7 +89,7 @@
 
       <div class="tab-panel" id="page-schools" role="tabpanel" aria-labelledby="tab-schools" data-tab-panel="schools" hidden>
       <section class="section-block" id="schools" aria-labelledby="schoolsTitle">
-        <div class="section-heading"><div><p class="eyebrow">6 SCHOOL STRATEGY</p><h2 id="schoolsTitle">대학별 전형과 2027 일정</h2></div><p>중앙대·건국대·서울과기대·숭실대·명지대·한성대 공식 모집요강 기준입니다. 모집단위별 세부 시간은 연결된 원문을 함께 확인하세요.</p></div>
+        <div class="section-heading"><div><p class="eyebrow">7 SCHOOL STRATEGY</p><h2 id="schoolsTitle">대학별 전형과 2027 일정</h2></div><p>중앙대·건국대·서울과기대·국민대·숭실대·명지대·한성대 공식 모집요강 기준입니다. 모집단위별 세부 시간은 연결된 원문을 함께 확인하세요.</p></div>
         <div class="school-grid" id="schoolGrid"></div>
       </section>
       </div>
@@ -119,6 +119,13 @@
             <button class="primary-action full" type="submit">일정 저장</button>
           </form>
         </div>
+        <section class="schedule-details" aria-labelledby="scheduleDetailsTitle">
+          <div class="details-heading">
+            <div><p class="eyebrow">FULL ADMISSION SCHEDULE</p><h3 id="scheduleDetailsTitle">학교별 상세 일정</h3></div>
+            <p>원서접수부터 서류제출, 1단계 합격 발표, 면접·논술, 최종 발표까지 순서대로 확인하세요.</p>
+          </div>
+          <div class="detail-school-grid" id="detailSchedule"></div>
+        </section>
       </section>
       </div>
 
@@ -136,6 +143,19 @@
       <section class="section-block source-section" id="sources" aria-labelledby="sourcesTitle">
         <div class="section-heading"><div><p class="eyebrow">ADMISSION TOOLKIT</p><h2 id="sourcesTitle">성적·컷·공식 자료 바로가기</h2></div><p>학생부 HTML을 내려받고 50·70% 컷을 확인한 뒤 학교별 전년도 결과와 비교하세요.</p></div>
         <div class="portal-grid" id="portalGrid"></div>
+        <section class="cutoff-section" aria-labelledby="cutoffTitle">
+          <div class="cutoff-heading">
+            <div><p class="eyebrow">50% · 70% ADMISSION CUT</p><h3 id="cutoffTitle">관심 학과 전년도 합격선</h3></div>
+            <p>제공한 Word 파일과 대학어디가 캡처의 50%·70% 컷을 옮긴 값입니다. 전형별 산출 방식은 원문에서 다시 확인하세요.</p>
+          </div>
+          <div class="cutoff-table-wrap" tabindex="0" aria-label="학교별 50퍼센트 70퍼센트 컷 표">
+            <table class="cutoff-table">
+              <thead><tr><th scope="col">학교</th><th scope="col">전형</th><th scope="col">모집단위</th><th scope="col">50% 컷</th><th scope="col">70% 컷</th></tr></thead>
+              <tbody id="cutoffTable"></tbody>
+            </table>
+          </div>
+          <div class="cutoff-note"><strong>읽는 법</strong><span>50% 컷은 최종등록자 중간 지점, 70% 컷은 70% 지점의 성적입니다. 숫자가 낮을수록 높은 내신 등급입니다.</span><a href="https://www.adiga.kr/uct/acd/ade/criteriaAndResultView.do?menuId=PCUCTACD2000" target="_blank" rel="noreferrer">대학어디가 원문 확인 ↗</a></div>
+        </section>
       </section>
       </div>
     </main>
