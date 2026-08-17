@@ -116,6 +116,7 @@ const scoreSubjects = ["국어", "수학", "영어", "탐구1", "탐구2"];
 const store = { get(key, fallback) { try { return JSON.parse(localStorage.getItem(key)) ?? fallback; } catch { return fallback; } }, set(key, value) { localStorage.setItem(key, JSON.stringify(value)); } };
 let activeSchool = "all";
 let customEvents = store.get("haeun-events-v2", []);
+let calendarCursor = new Date(2026, 8, 1);
 let tasks = store.get("haeun-tasks-v2", [
   { id: crypto.randomUUID(), area: "면접", title: "생기부 프린트하고 형광팬 3색 준비", due: "2026-08-23", done: false },
   { id: crypto.randomUUID(), area: "면접", title: "생기부 핵심 단어·개념 100개 작성", due: "2026-08-30", done: false },
@@ -125,14 +126,34 @@ let tasks = store.get("haeun-tasks-v2", [
 
 function school(id) { return schools.find((item) => item.id === id) || { name: "개인", short: "개인", tone: "#d9b8ef" }; }
 function formatDate(value) { return new Intl.DateTimeFormat("ko-KR", { year: "numeric", month: "2-digit", day: "2-digit", weekday: "short" }).format(new Date(`${value}T00:00:00`)); }
+function dateKey(date) { return `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,"0")}-${String(date.getDate()).padStart(2,"0")}`; }
+function escapeHtml(value) { return String(value).replace(/[&<>"']/g, (char) => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#039;" })[char]); }
 function renderDday() { const diff = Math.ceil((new Date("2026-09-07T00:00:00+09:00") - new Date()) / 86400000); document.querySelector("#ddayCount").textContent = diff >= 0 ? `D-${diff}` : `D+${Math.abs(diff)}`; }
 function renderInterview() { document.querySelector("#interviewGuide").innerHTML = interviewGuide.map(([n,t,d]) => `<article class="guide-card"><span>${n}</span><div><h3>${t}</h3><p>${d}</p></div></article>`).join(""); }
 function renderEssay() { document.querySelector("#essaySteps").innerHTML = essaySteps.map(([n,t,d]) => `<article class="essay-step"><span>${n}</span><div><h3>${t}</h3><p>${d}</p></div></article>`).join(""); document.querySelector("#essayLinks").innerHTML = essayLinks.map(([l,h]) => `<a href="${h}" target="_blank" rel="noreferrer">${l}<span>↗</span></a>`).join(""); }
 function renderScores() { const saved = store.get("haeun-scores-v2", {}); document.querySelector("#scoreGrid").innerHTML = scoreSubjects.map((s) => `<label class="score-card"><span>${s}</span><select data-score="${s}">${[1,2,3,4,5].map((g) => `<option value="${g}" ${String(g) === (saved[s] || "2") ? "selected" : ""}>${g}등급</option>`).join("")}</select></label>`).join(""); }
 function renderSchools() { document.querySelector("#schoolGrid").innerHTML = schools.map((s) => `<article class="school-card" style="--tone:${s.tone}"><div class="school-head"><div><span class="school-kicker">${s.short}</span><h3>${s.name}</h3><p>${s.focus}</p></div><span class="dot"></span></div><p class="school-summary">${s.summary}</p><ul>${s.dates.map((d) => `<li>${d}</li>`).join("")}</ul><div class="link-row">${s.links.map(([l,h]) => `<a href="${h}" target="_blank" rel="noreferrer">${l}</a>`).join("")}</div></article>`).join(""); }
-function renderFilters() { document.querySelector("#schoolFilters").innerHTML = `<button class="filter-button active" data-school="all">전체</button>${schools.map((s) => `<button class="filter-button" data-school="${s.id}">${s.short}</button>`).join("")}`; document.querySelector("#eventSchool").innerHTML = `${schools.map((s) => `<option value="${s.id}">${s.short}</option>`).join("")}<option value="personal">개인 공통</option>`; }
+function renderFilters() { document.querySelector("#schoolFilters").innerHTML = `<button class="filter-button active" data-school="all">전체</button>${schools.map((s) => `<button class="filter-button" style="--tone:${s.tone}" data-school="${s.id}"><span class="color-swatch" aria-hidden="true"></span>${s.short}</button>`).join("")}`; document.querySelector("#eventSchool").innerHTML = `${schools.map((s) => `<option value="${s.id}">${s.short}</option>`).join("")}<option value="personal">개인 공통</option>`; }
 function events() { return [...baseEvents.map(([date,schoolId,title,memo]) => ({ id:`${date}-${schoolId}-${title}`, date, school:schoolId, title, memo, custom:false })), ...customEvents].sort((a,b) => a.date.localeCompare(b.date)); }
-function renderTimeline() { const list = events().filter((e) => activeSchool === "all" || e.school === activeSchool); document.querySelector("#timeline").innerHTML = list.map((e) => { const s = school(e.school); return `<article class="event-card" style="--tone:${s.tone}"><time>${formatDate(e.date)}</time><div><span class="event-school">${s.short}</span><h3>${e.title}</h3><p>${e.memo}</p></div>${e.custom ? `<button type="button" data-delete-event="${e.id}" aria-label="일정 삭제">삭제</button>` : ""}</article>`; }).join(""); }
+function renderTimeline() {
+  const year = calendarCursor.getFullYear();
+  const month = calendarCursor.getMonth();
+  const first = new Date(year, month, 1);
+  const last = new Date(year, month + 1, 0);
+  const cells = Math.ceil((first.getDay() + last.getDate()) / 7) * 7;
+  const start = new Date(year, month, 1 - first.getDay());
+  const visibleEvents = events().filter((e) => activeSchool === "all" || e.school === activeSchool);
+  const grouped = visibleEvents.reduce((map, event) => { (map[event.date] ||= []).push(event); return map; }, {});
+  document.querySelector("#calendarMonth").textContent = `${year}.${String(month+1).padStart(2,"0")}`;
+  document.querySelector("#calendarGrid").innerHTML = Array.from({length:cells}, (_, index) => {
+    const day = new Date(start); day.setDate(start.getDate() + index);
+    const key = dateKey(day);
+    const dayEvents = grouped[key] || [];
+    const classes = ["calendar-day", day.getMonth() === month ? "" : "outside", key === dateKey(new Date()) ? "today" : ""].filter(Boolean).join(" ");
+    const entries = dayEvents.slice(0, 3).map((event) => { const s = school(event.school); const shortTitle = event.title.replace(s.short, "").trim(); return `<div class="calendar-event" style="--tone:${s.tone}" title="${escapeHtml(`${event.title} · ${event.memo}`)}"><b>${escapeHtml(s.short)}</b><span>${escapeHtml(shortTitle)}</span>${event.custom ? `<button type="button" data-delete-event="${event.id}" aria-label="${escapeHtml(event.title)} 삭제">×</button>` : ""}</div>`; }).join("");
+    return `<div class="${classes}" data-date="${key}"><span class="day-number">${day.getDate()}</span><div class="day-events">${entries}${dayEvents.length > 3 ? `<span class="more-events">+${dayEvents.length-3}개 더보기</span>` : ""}</div></div>`;
+  }).join("");
+}
 function renderTasks() { document.querySelector("#taskList").innerHTML = tasks.length ? tasks.map((t) => `<article class="task-item ${t.done ? "done" : ""}"><input type="checkbox" data-task-check="${t.id}" ${t.done ? "checked" : ""} aria-label="완료 체크" /><div><strong>${t.title}</strong><p>${t.area}${t.due ? ` · ${formatDate(t.due)}` : ""}</p></div><button type="button" data-task-delete="${t.id}" aria-label="계획 삭제">삭제</button></article>`).join("") : `<p class="empty">아직 저장한 계획이 없어요.</p>`; }
 function renderPortals() { document.querySelector("#portalGrid").innerHTML = portals.map(([t,d,h,l],i) => `<article class="portal-card"><span>0${i+1}</span><h3>${t}</h3><p>${d}</p><a href="${h}" target="_blank" rel="noreferrer">${l} ↗</a></article>`).join(""); }
 
@@ -152,12 +173,14 @@ function openTab(name, { updateHash = true, scroll = false } = {}) {
 }
 
 document.addEventListener("submit", (event) => {
-  if (event.target.id === "eventForm") { event.preventDefault(); customEvents.push({ id:crypto.randomUUID(), school:eventSchool.value, date:eventDate.value, title:eventTitle.value.trim(), memo:eventMemo.value.trim() || "개인 추가 일정", custom:true }); store.set("haeun-events-v2", customEvents); event.target.reset(); renderTimeline(); }
+  if (event.target.id === "eventForm") { event.preventDefault(); const selectedDate = eventDate.value; customEvents.push({ id:crypto.randomUUID(), school:eventSchool.value, date:selectedDate, title:eventTitle.value.trim(), memo:eventMemo.value.trim() || "개인 추가 일정", custom:true }); calendarCursor = new Date(`${selectedDate}T00:00:00`); store.set("haeun-events-v2", customEvents); event.target.reset(); renderTimeline(); }
   if (event.target.id === "taskForm") { event.preventDefault(); tasks.unshift({ id:crypto.randomUUID(), area:taskArea.value, title:taskTitle.value.trim(), due:taskDue.value, done:false }); store.set("haeun-tasks-v2", tasks); event.target.reset(); renderTasks(); }
 });
 document.addEventListener("click", (event) => {
   const tab = event.target.closest("[data-tab]"); if (tab) { openTab(tab.dataset.tab, { scroll:true }); }
   const tabLink = event.target.closest("[data-open-tab]"); if (tabLink) { event.preventDefault(); openTab(tabLink.dataset.openTab, { scroll:true }); }
+  if (event.target.closest("#calendarPrev")) { calendarCursor = new Date(calendarCursor.getFullYear(), calendarCursor.getMonth()-1, 1); renderTimeline(); }
+  if (event.target.closest("#calendarNext")) { calendarCursor = new Date(calendarCursor.getFullYear(), calendarCursor.getMonth()+1, 1); renderTimeline(); }
   const filter = event.target.closest("[data-school]"); if (filter) { activeSchool = filter.dataset.school; document.querySelectorAll(".filter-button").forEach((b) => b.classList.toggle("active", b.dataset.school === activeSchool)); renderTimeline(); }
   const de = event.target.closest("[data-delete-event]"); if (de) { customEvents = customEvents.filter((e) => e.id !== de.dataset.deleteEvent); store.set("haeun-events-v2", customEvents); renderTimeline(); }
   const dt = event.target.closest("[data-task-delete]"); if (dt) { tasks = tasks.filter((t) => t.id !== dt.dataset.taskDelete); store.set("haeun-tasks-v2", tasks); renderTasks(); }

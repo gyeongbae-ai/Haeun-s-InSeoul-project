@@ -98,7 +98,18 @@
       <section class="section-block calendar-section" id="calendar" aria-labelledby="calendarTitle">
         <div class="section-heading"><div><p class="eyebrow">APPLICATION CALENDAR</p><h2 id="calendarTitle">학교별 수시 캘린더</h2></div><div class="filter-row" id="schoolFilters" role="group" aria-label="학교 필터"></div></div>
         <div class="calendar-layout">
-          <div class="timeline" id="timeline"></div>
+          <div class="month-calendar">
+            <div class="calendar-toolbar">
+              <button class="calendar-arrow" id="calendarPrev" type="button" aria-label="이전 달" title="이전 달">‹</button>
+              <h3 id="calendarMonth" aria-live="polite"></h3>
+              <button class="calendar-arrow" id="calendarNext" type="button" aria-label="다음 달" title="다음 달">›</button>
+            </div>
+            <div class="calendar-scroll" tabindex="0" aria-label="월간 수시 일정표">
+              <div class="calendar-weekdays" aria-hidden="true"><span>일</span><span>월</span><span>화</span><span>수</span><span>목</span><span>금</span><span>토</span></div>
+              <div class="calendar-grid" id="calendarGrid"></div>
+            </div>
+            <p class="calendar-hint">학교 색상으로 일정을 구분했어요. 좌우 화살표로 다른 달을 확인하세요.</p>
+          </div>
           <form class="planner-form" id="eventForm">
             <h3>내 일정 추가</h3>
             <label>학교<select id="eventSchool" required></select></label>
