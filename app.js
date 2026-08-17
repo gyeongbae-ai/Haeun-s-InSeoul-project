@@ -136,18 +136,45 @@ function renderTimeline() { const list = events().filter((e) => activeSchool ===
 function renderTasks() { document.querySelector("#taskList").innerHTML = tasks.length ? tasks.map((t) => `<article class="task-item ${t.done ? "done" : ""}"><input type="checkbox" data-task-check="${t.id}" ${t.done ? "checked" : ""} aria-label="완료 체크" /><div><strong>${t.title}</strong><p>${t.area}${t.due ? ` · ${formatDate(t.due)}` : ""}</p></div><button type="button" data-task-delete="${t.id}" aria-label="계획 삭제">삭제</button></article>`).join("") : `<p class="empty">아직 저장한 계획이 없어요.</p>`; }
 function renderPortals() { document.querySelector("#portalGrid").innerHTML = portals.map(([t,d,h,l],i) => `<article class="portal-card"><span>0${i+1}</span><h3>${t}</h3><p>${d}</p><a href="${h}" target="_blank" rel="noreferrer">${l} ↗</a></article>`).join(""); }
 
+const tabNames = new Set(["interview", "essay", "schools", "calendar", "tasks", "sources"]);
+function openTab(name, { updateHash = true, scroll = false } = {}) {
+  const tabName = tabNames.has(name) ? name : "interview";
+  document.querySelectorAll("[data-tab]").forEach((tab) => {
+    const active = tab.dataset.tab === tabName;
+    tab.classList.toggle("active", active);
+    tab.setAttribute("aria-selected", String(active));
+    tab.tabIndex = active ? 0 : -1;
+    if (active && scroll) tab.scrollIntoView({ behavior:"smooth", block:"nearest", inline:"center" });
+  });
+  document.querySelectorAll("[data-tab-panel]").forEach((panel) => { panel.hidden = panel.dataset.tabPanel !== tabName; });
+  if (updateHash) history.replaceState(null, "", `#${tabName}`);
+  if (scroll) document.querySelector("#pageTabs").scrollIntoView({ behavior:"smooth", block:"start" });
+}
+
 document.addEventListener("submit", (event) => {
   if (event.target.id === "eventForm") { event.preventDefault(); customEvents.push({ id:crypto.randomUUID(), school:eventSchool.value, date:eventDate.value, title:eventTitle.value.trim(), memo:eventMemo.value.trim() || "개인 추가 일정", custom:true }); store.set("haeun-events-v2", customEvents); event.target.reset(); renderTimeline(); }
   if (event.target.id === "taskForm") { event.preventDefault(); tasks.unshift({ id:crypto.randomUUID(), area:taskArea.value, title:taskTitle.value.trim(), due:taskDue.value, done:false }); store.set("haeun-tasks-v2", tasks); event.target.reset(); renderTasks(); }
 });
 document.addEventListener("click", (event) => {
+  const tab = event.target.closest("[data-tab]"); if (tab) { openTab(tab.dataset.tab, { scroll:true }); }
+  const tabLink = event.target.closest("[data-open-tab]"); if (tabLink) { event.preventDefault(); openTab(tabLink.dataset.openTab, { scroll:true }); }
   const filter = event.target.closest("[data-school]"); if (filter) { activeSchool = filter.dataset.school; document.querySelectorAll(".filter-button").forEach((b) => b.classList.toggle("active", b.dataset.school === activeSchool)); renderTimeline(); }
   const de = event.target.closest("[data-delete-event]"); if (de) { customEvents = customEvents.filter((e) => e.id !== de.dataset.deleteEvent); store.set("haeun-events-v2", customEvents); renderTimeline(); }
   const dt = event.target.closest("[data-task-delete]"); if (dt) { tasks = tasks.filter((t) => t.id !== dt.dataset.taskDelete); store.set("haeun-tasks-v2", tasks); renderTasks(); }
 });
+document.querySelector("#pageTabs").addEventListener("keydown", (event) => {
+  if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) return;
+  event.preventDefault();
+  const tabs = [...document.querySelectorAll("[data-tab]")];
+  const current = tabs.findIndex((tab) => tab.getAttribute("aria-selected") === "true");
+  const next = event.key === "Home" ? 0 : event.key === "End" ? tabs.length - 1 : (current + (event.key === "ArrowRight" ? 1 : -1) + tabs.length) % tabs.length;
+  openTab(tabs[next].dataset.tab);
+  tabs[next].focus();
+});
+window.addEventListener("hashchange", () => openTab(location.hash.slice(1), { updateHash:false }));
 document.addEventListener("change", (event) => {
   if (event.target.matches("[data-score]")) { const saved = store.get("haeun-scores-v2", {}); saved[event.target.dataset.score] = event.target.value; store.set("haeun-scores-v2", saved); }
   if (event.target.matches("[data-task-check]")) { tasks = tasks.map((t) => t.id === event.target.dataset.taskCheck ? {...t, done:event.target.checked} : t); store.set("haeun-tasks-v2", tasks); renderTasks(); }
 });
 
-renderDday(); renderInterview(); renderEssay(); renderScores(); renderSchools(); renderFilters(); renderTimeline(); renderTasks(); renderPortals();
+renderDday(); renderInterview(); renderEssay(); renderScores(); renderSchools(); renderFilters(); renderTimeline(); renderTasks(); renderPortals(); openTab(location.hash.slice(1), { updateHash:false });
