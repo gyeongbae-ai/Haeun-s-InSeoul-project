@@ -1,1 +1,0 @@
-# Haeun-s-InSeoul-project
