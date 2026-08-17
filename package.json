@@ -1,0 +1,9 @@
+{
+  "name": "haeun-inseoul-project",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "npx serve .",
+    "build": "node -e \"console.log('Static site ready for Vercel')\""
+  }
+}
