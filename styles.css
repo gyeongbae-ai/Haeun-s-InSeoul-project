@@ -30,9 +30,10 @@ button { cursor:pointer; }
 .deadline-chip { max-width:100%; white-space:nowrap; font-size:clamp(.72rem,1.6vw,.9rem); }
 .dday-grid { position:relative; display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; }
 .dday-card { min-width:0; padding:15px; border:1px solid #d7c9dc; border-radius:7px; background:rgba(255,255,255,.86); }
-.ghent-dday { border-color:#dfc66c; background:#fffbee; }
-.ghent-dday .deadline-chip { color:#735b10; background:#f9e7a6; }
-.ghent-dday .dday { color:#b58918; }
+.ghent-dday { border-color:#eba1c4; background:#fff2f8; }
+.ghent-dday .deadline-chip { color:#9b456f; background:#fbd5e7; }
+.ghent-dday .dday { color:#d45d96; }
+.ghent-dday .small-note { color:#9b5a79; }
 .dday { margin:8px 0 0; font-family:"Jua"; font-size:3.8rem; line-height:1; color:#9a5daf; }
 .small-note,.task-item p { margin:6px 0 0; color:var(--muted); font-size:.82rem; }
 
