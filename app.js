@@ -288,14 +288,15 @@ function saveStudyRecord(record) { studyRecords[studyDate] = record; store.set("
 function renderStudyPlanner() {
   const record = studyRecord();
   const entries = record.entries || [];
+  const completedEntries = entries.filter((entry) => entry.done);
   document.querySelector("#studyDate").value = studyDate;
   document.querySelector("#studyDateLabel").textContent = formatDate(studyDate);
   document.querySelector("#wakeTime").value = record.wake || "";
   document.querySelector("#sleepTime").value = record.sleep || "";
   document.querySelector("#dailyMemo").value = record.memo || "";
-  document.querySelector("#studyTotal").textContent = formatStudyMinutes(entries.reduce((sum, entry) => sum + studyMinutes(entry), 0));
-  document.querySelector("#studyCount").textContent = `기록 ${entries.length}개 · 완료 ${entries.filter((entry) => entry.done).length}개`;
-  document.querySelector("#studyEntryList").innerHTML = entries.length ? entries.map((entry) => `<article class="study-entry ${entry.done ? "done" : ""}"><input type="checkbox" data-study-check="${entry.id}" ${entry.done ? "checked" : ""} aria-label="${escapeHtml(entry.content)} 완료 체크" /><div><span>${escapeHtml(entry.area)}</span><strong>${escapeHtml(entry.content)}</strong></div><time>${entry.start}–${entry.end}</time><b>${formatStudyMinutes(studyMinutes(entry))}</b><button type="button" data-study-delete="${entry.id}" aria-label="${escapeHtml(entry.content)} 삭제">×</button></article>`).join("") : `<p class="study-empty">이 날짜에 기록한 공부가 아직 없어요. 첫 공부를 추가해 보세요.</p>`;
+  document.querySelector("#studyTotal").textContent = formatStudyMinutes(completedEntries.reduce((sum, entry) => sum + studyMinutes(entry), 0));
+  document.querySelector("#studyCount").textContent = `계획 ${entries.length}개 · 완료 ${completedEntries.length}개`;
+  document.querySelector("#studyEntryList").innerHTML = entries.length ? entries.map((entry) => { const minutes = studyMinutes(entry); const time = entry.start && entry.end ? `${entry.start}–${entry.end}` : "시간 미입력"; return `<article class="study-entry ${entry.done ? "done" : ""}"><input type="checkbox" data-study-check="${entry.id}" ${entry.done ? "checked" : ""} aria-label="${escapeHtml(entry.content)} 완료 체크" /><div><span>${escapeHtml(entry.area)}${entry.done ? " · 완료" : " · 계획"}</span><strong>${escapeHtml(entry.content)}</strong></div><time>${time}</time><b>${minutes ? formatStudyMinutes(minutes) : "-"}</b><button type="button" data-study-delete="${entry.id}" aria-label="${escapeHtml(entry.content)} 삭제">×</button></article>`; }).join("") : `<p class="study-empty">이 날짜에 작성한 계획이 아직 없어요. 오늘의 첫 계획을 추가해 보세요.</p>`;
 }
 function moveStudyDate(days) { const next = new Date(`${studyDate}T00:00:00`); next.setDate(next.getDate() + days); studyDate = dateKey(next); renderStudyPlanner(); }
 function renderStudySearch(query) {
@@ -304,7 +305,7 @@ function renderStudySearch(query) {
   if (!keyword) { results.hidden = true; results.innerHTML = ""; return; }
   const matches = Object.entries(studyRecords).filter(([date,record]) => `${date} ${record.memo || ""} ${(record.entries || []).map((entry) => `${entry.area} ${entry.content}`).join(" ")}`.toLowerCase().includes(keyword)).sort(([a],[b]) => b.localeCompare(a)).slice(0, 12);
   results.hidden = false;
-  results.innerHTML = matches.length ? matches.map(([date,record]) => { const total = (record.entries || []).reduce((sum, entry) => sum + studyMinutes(entry), 0); const preview = (record.entries || []).map((entry) => entry.content).join(", ") || record.memo || "생활 시간 기록"; return `<button type="button" data-study-date-result="${date}"><strong>${formatDate(date)}</strong><span>${escapeHtml(preview)}</span><b>${formatStudyMinutes(total)}</b></button>`; }).join("") : `<p>검색된 기록이 없어요.</p>`;
+  results.innerHTML = matches.length ? matches.map(([date,record]) => { const total = (record.entries || []).filter((entry) => entry.done).reduce((sum, entry) => sum + studyMinutes(entry), 0); const preview = (record.entries || []).map((entry) => entry.content).join(", ") || record.memo || "생활 시간 기록"; return `<button type="button" data-study-date-result="${date}"><strong>${formatDate(date)}</strong><span>${escapeHtml(preview)}</span><b>${formatStudyMinutes(total)}</b></button>`; }).join("") : `<p>검색된 기록이 없어요.</p>`;
 }
 function renderPortals() { document.querySelector("#portalGrid").innerHTML = portals.map(([t,d,h,l],i) => `<article class="portal-card"><span>0${i+1}</span><h3>${t}</h3><p>${d}</p><a href="${h}" target="_blank" rel="noreferrer">${l} ↗</a></article>`).join(""); }
 function renderCutoffs() { document.querySelector("#cutoffTable").innerHTML = cutoffRows.map((row) => `<tr style="--tone:${row.tone}"><td class="cutoff-school" data-label="학교"><span aria-hidden="true"></span>${row.school}</td><td class="cutoff-type" data-label="전형">${row.type}</td><td class="cutoff-major" data-label="모집단위"><strong>${row.major}</strong>${row.currentMajor ? `<small>2027 명칭: ${row.currentMajor}</small>` : ""}</td><td class="cutoff-number" data-label="2026 최종">${row.prevSeats}명</td><td class="cutoff-number current" data-label="2027 모집">${row.currentSeats}명</td><td class="cutoff-number" data-label="2026 경쟁률">${row.competition}:1</td><td class="cutoff-number" data-label="2026 충원">${row.waitlist}명</td><td class="cutoff-score" data-label="50% 컷">${row.cut50}등급</td><td class="cutoff-score" data-label="70% 컷">${row.cut70}등급</td></tr>`).join(""); }

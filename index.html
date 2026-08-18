@@ -175,7 +175,7 @@
         <section class="study-planner" aria-labelledby="studyPlannerTitle">
           <header class="study-planner-heading">
             <div><p class="eyebrow">DAILY STUDY RECORD</p><h3 id="studyPlannerTitle">매일 스터디 플래너</h3></div>
-            <p>기상·취침 시간과 오늘 공부한 내용을 날짜별로 기록하고 다시 찾아보세요.</p>
+            <p>오늘 할 계획을 먼저 작성하고, 끝낸 항목은 체크해 날짜별 완료 기록으로 남겨보세요.</p>
           </header>
           <div class="study-toolbar">
             <div class="study-date-nav" aria-label="스터디 플래너 날짜 이동">
@@ -197,20 +197,20 @@
                 <label>일어난 시간<input id="wakeTime" type="time" /></label>
                 <label>잠든 시간<input id="sleepTime" type="time" /></label>
               </div>
-              <div class="study-total"><span>오늘 총 공부시간</span><strong id="studyTotal">0시간 0분</strong><small id="studyCount">기록 0개</small></div>
+              <div class="study-total"><span>풀집중시간</span><strong id="studyTotal">0시간 0분</strong><small id="studyCount">계획 0개 · 완료 0개</small></div>
               <label class="daily-memo-label" for="dailyMemo">오늘의 메모</label>
               <textarea id="dailyMemo" rows="7" placeholder="오늘 잘한 점, 아쉬운 점, 내일 이어서 할 것"></textarea>
               <p class="save-state" id="studySaveState" aria-live="polite">날짜별로 자동 저장됩니다.</p>
             </aside>
             <div class="study-log">
               <form class="study-entry-form" id="studyEntryForm">
-                <label>영역<select id="studyArea"><option>수학</option><option>국어</option><option>영어</option><option>탐구</option><option>논술</option><option>면접</option><option>서류</option><option>기타</option></select></label>
-                <label class="study-content-field">공부한 내용<input id="studyContent" type="text" placeholder="예: 건국대 2024 수리논술 1회" required /></label>
-                <label>시작<input id="studyStart" type="time" required /></label>
-                <label>종료<input id="studyEnd" type="time" required /></label>
-                <button type="submit" class="primary-action study-add-button">추가</button>
+                <label>계획 영역<select id="studyArea"><option>수학</option><option>국어</option><option>영어</option><option>탐구</option><option>논술</option><option>면접</option><option>서류</option><option>기타</option></select></label>
+                <label class="study-content-field">계획 및 공부 내용<input id="studyContent" type="text" placeholder="예: 건국대 2024 수리논술 1회 풀기" required /></label>
+                <label>집중 시작 <small>선택</small><input id="studyStart" type="time" /></label>
+                <label>집중 종료 <small>선택</small><input id="studyEnd" type="time" /></label>
+                <button type="submit" class="primary-action study-add-button">계획 추가</button>
               </form>
-              <div class="study-table-head" aria-hidden="true"><span>완료</span><span>영역·공부 내용</span><span>시간</span><span>공부량</span><span></span></div>
+              <div class="study-table-head" aria-hidden="true"><span>완료</span><span>계획·완료한 내용</span><span>집중 시간</span><span>집중량</span><span></span></div>
               <div class="study-entry-list" id="studyEntryList"></div>
             </div>
           </div>
