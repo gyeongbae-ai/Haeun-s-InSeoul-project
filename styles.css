@@ -8,14 +8,14 @@ a { color:inherit; text-decoration:none; }
 button,input,select,textarea { font:inherit; letter-spacing:0; }
 button { cursor:pointer; }
 [hidden] { display:none !important; }
-.cursor-bubble { --cursor-x:-100px; --cursor-y:-100px; position:fixed; left:0; top:0; z-index:9999; width:64px; height:64px; pointer-events:none; border:2px solid rgba(225,103,158,.72); border-radius:50%; background:rgba(255,213,232,.12); box-shadow:0 0 0 7px rgba(185,153,221,.1),0 8px 22px rgba(157,91,151,.16); opacity:0; transform:translate3d(var(--cursor-x),var(--cursor-y),0) translate(-50%,-50%); transition:width .18s ease,height .18s ease,opacity .16s ease,border-width .18s ease; animation:cursor-bubble-color 4.8s ease-in-out infinite; }
-.cursor-bubble::before,.cursor-bubble::after { content:""; position:absolute; border:1px solid currentColor; border-radius:50%; background:rgba(255,255,255,.34); box-shadow:0 3px 8px rgba(113,74,119,.13); }
+.cursor-bubble { --cursor-x:-100px; --cursor-y:-100px; position:fixed; left:0; top:0; z-index:9999; width:60px; height:60px; pointer-events:none; border:1px solid rgba(225,103,158,.28); border-radius:50%; background:rgba(255,213,232,.05); box-shadow:0 5px 18px rgba(157,91,151,.08); opacity:0; transform:translate3d(var(--cursor-x),var(--cursor-y),0) translate(-50%,-50%); transition:width .2s ease,height .2s ease,opacity .16s ease; animation:cursor-bubble-color 5.6s ease-in-out infinite; }
+.cursor-bubble::before,.cursor-bubble::after { content:""; position:absolute; border:1px solid currentColor; border-radius:50%; background:rgba(255,255,255,.18); opacity:.42; }
 .cursor-bubble::before { width:13px; height:13px; right:-8px; top:4px; color:#d8649d; }
 .cursor-bubble::after { width:8px; height:8px; left:3px; bottom:-7px; color:#75bca8; }
 .cursor-bubble.visible { opacity:1; }
-.cursor-bubble.interactive { width:78px; height:78px; border-width:3px; }
-.cursor-bubble.burst { width:94px; height:94px; }
-@keyframes cursor-bubble-color { 0%,100% { border-color:rgba(225,103,158,.76); background:rgba(255,213,232,.12); box-shadow:0 0 0 7px rgba(185,153,221,.1),0 8px 22px rgba(157,91,151,.16); } 40% { border-color:rgba(165,116,207,.74); background:rgba(226,210,247,.14); box-shadow:0 0 0 7px rgba(225,103,158,.09),0 8px 22px rgba(123,85,156,.16); } 70% { border-color:rgba(93,184,159,.72); background:rgba(207,242,232,.14); box-shadow:0 0 0 7px rgba(112,187,167,.1),0 8px 22px rgba(75,135,122,.15); } }
+.cursor-bubble.interactive { width:70px; height:70px; }
+.cursor-bubble.burst { width:82px; height:82px; }
+@keyframes cursor-bubble-color { 0%,100% { border-color:rgba(225,103,158,.3); background:rgba(255,213,232,.05); box-shadow:0 5px 18px rgba(157,91,151,.08); } 40% { border-color:rgba(165,116,207,.28); background:rgba(226,210,247,.055); box-shadow:0 5px 18px rgba(123,85,156,.075); } 70% { border-color:rgba(93,184,159,.27); background:rgba(207,242,232,.055); box-shadow:0 5px 18px rgba(75,135,122,.07); } }
 @media (pointer:coarse) { .cursor-bubble { display:none; } }
 @media (prefers-reduced-motion:reduce) { .cursor-bubble { animation:none; transition:opacity .12s ease; } }
 
