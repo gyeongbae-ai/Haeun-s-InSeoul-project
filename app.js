@@ -10,7 +10,7 @@ const schools = [
     ]
   },
   {
-    id: "konkuk", short: "건국대", name: "건국대학교", tone: "#a9d9c8", focus: "KU자기추천 · KU논술우수자",
+    id: "konkuk", short: "건국대", name: "건국대학교", tone: "#72c9a5", focus: "KU자기추천 · KU논술우수자",
     summary: "KU자기추천은 서류 100%(3배수) 후 1단계 70% + 면접 30%, 수능최저 없음. KU논술우수자는 논술 100%이며 모집단위별 수능최저를 확인해야 합니다.",
     dates: ["원서 9.7 ~ 9.11", "논술 11.21", "자기추천 면접 12.5 ~ 12.6", "최초합격 12.18까지"],
     links: [
@@ -20,14 +20,30 @@ const schools = [
     ]
   },
   {
-    id: "seoultech", short: "서울과기대", name: "서울과학기술대학교", tone: "#9fc8ef", focus: "학교생활우수자 · 창의융합인재 · 논술",
+    id: "ghent", short: "겐트대", name: "겐트대학교 글로벌캠퍼스", tone: "#f0cc4e", focus: "2027년 3월학기 · 일반전형 · 학교장추천전형", wide: true,
+    summary: "인천 송도에 있는 벨기에 겐트대학교 글로벌캠퍼스입니다. 선착순 심사 방식으로 원서를 받은 뒤 제출일 기준 약 4~6주 안에 결과를 이메일로 개별 안내합니다.",
+    dates: ["원서접수 2026.9.1 시작", "우선지원 2026.11.30 마감", "온라인 입학시험 2026.12.31까지 응시 가능", "최종지원 2027.1.31 마감(조기마감 가능)", "합격 결과 원서 제출 후 4~6주 내 개별 통보"],
+    requirements: [
+      { title:"학교장추천 필수서류", items:["증명사진 JPG·여권사본", "영문 졸업(예정) 또는 재학증명서", "영문 내신성적표·국문 생활기록부", "영문 본교 양식 학교장추천서"] },
+      { title:"일반전형 필수서류", items:["증명사진 JPG·여권사본", "영문 졸업증명서·영문 성적증명서", "입학시험 14점 이상 또는 SAT 수학 720·ACT 수학 32 중 하나", "공인영어성적: TOEFL iBT 72·IELTS 6.0·IB 5·SAT 영어 500·ACT 영어 21·수능 영어 2등급 중 하나"] },
+      { title:"선택·유의사항", items:["일반전형: 영문 자기소개서와 영문 공증 활동자료 선택 제출", "입학시험은 수학·화학 20문항, 120분, 오픈북·계산기 사용 가능", "모든 업로드 파일은 10MB 이하, 사진 외 서류는 PDF", "졸업예정자는 등록기간 내 최종 졸업·성적증명서 추가 제출"] }
+    ],
+    links: [
+      ["모집요강", "https://admissions.ghent.ac.kr/user/contents.php?sq=6"],
+      ["온라인 지원", "https://admissions.ghent.ac.kr/user/contents.php?sq=7"],
+      ["서식·자료실", "https://admissions.ghent.ac.kr/user/board/list.php?board_code=pds_kr"],
+      ["입학 FAQ", "https://admissions.ghent.ac.kr/user/board/list.php?board_code=faq_kr&page=1&srchCate=A&srchKey=AB"]
+    ]
+  },
+  {
+    id: "seoultech", short: "서울과기대", name: "서울과학기술대학교", tone: "#70afe9", focus: "학교생활우수자 · 창의융합인재 · 논술",
     summary: "학생부종합은 1단계 서류 100% 후 2단계 면접을 실시합니다. 논술전형은 논술 70% + 교과 30%로 선발하며 모집단위별 최저를 확인합니다.",
     dates: ["원서 9.7 09:00 ~ 9.11 18:00", "1단계 11.20 14:00", "논술 11.23 10:00", "면접 11.28 ~ 11.29", "최초합격 12.18 14:00"],
     links: [["입학처", "https://admission.seoultech.ac.kr/"], ["2027 모집요강", "https://ipsi.theschools.co.kr/cne_s/4/947.pdf"], ["입시결과", "https://admission.seoultech.ac.kr/"]]
   },
   {
-    id: "kookmin", short: "국민대", name: "국민대학교", tone: "#f0c49d", focus: "국민프런티어 · 교과우수자",
-    summary: "국민프런티어는 1단계 서류 100%(3배수), 2단계 1단계 70% + 면접 30%로 선발하며 수능최저가 없습니다. 관심 모집단위는 지능형ICT융합전공·융합바이오공학과·임산생명공학과입니다.",
+    id: "kookmin", short: "국민대", name: "국민대학교", tone: "#f3a15a", focus: "국민프런티어 · 교과우수자",
+    summary: "국민프런티어는 1단계 서류 100%(3배수), 2단계 1단계 70% + 면접 30%로 선발하며 수능최저가 없습니다. 2027학년도부터 임산생명공학과는 바이오소재융합공학과로 명칭이 바뀝니다.",
     dates: ["원서 9.7 10:00 ~ 9.11 18:00", "1단계 11.17 14:00", "자연계 면접 11.21", "인문·예체능 면접 11.22", "최초합격 12.18 17:00"],
     links: [
       ["2027 모집요강", "https://admission.kookmin.ac.kr/nonschedule/notice.php?ctype=view&no=1070&page=1"],
@@ -36,19 +52,19 @@ const schools = [
     ]
   },
   {
-    id: "ssu", short: "숭실대", name: "숭실대학교", tone: "#cab5ed", focus: "SSU미래인재(면접형) · 논술우수자",
+    id: "ssu", short: "숭실대", name: "숭실대학교", tone: "#ad8de0", focus: "SSU미래인재(면접형) · 논술우수자",
     summary: "미래인재 면접형은 서류 100%(3~3.5배수) 후 1단계 50% + 면접 50%. 논술우수자는 논술 80% + 학생부교과 20%입니다.",
     dates: ["원서 9.8 10:00 ~ 9.11 18:00", "논술 11.21", "1단계 11.23", "면접 11.27 ~ 11.28", "최초합격 12.18 10:00"],
     links: [["2027 모집요강", "https://admission.ssu.ac.kr/mojip/req.asp?flag=1&page_no=1_2_2"], ["모집요강 PDF", "https://admission.ssu.ac.kr/upload/SSU%281%29_260617194254.pdf"], ["입시통계", "https://admission.ssu.ac.kr/"]]
   },
   {
-    id: "mju", short: "명지대", name: "명지대학교", tone: "#f0c49d", focus: "명지인재면접 · 교과면접",
+    id: "mju", short: "명지대", name: "명지대학교", tone: "#57bdb5", focus: "명지인재면접 · 교과면접",
     summary: "명지인재면접은 서류 100%(4배수) 후 1단계 70% + 면접 30%. 교과면접은 교과 100%(5배수) 후 1단계 70% + 면접 30%입니다. 전 전형 수능최저 없음.",
     dates: ["원서 9.7 10:00 ~ 9.11 17:00", "교과면접 10.31", "명지인재 면접 11.28 ~ 11.29", "최초합격 12.9 15:00"],
     links: [["2027 모집요강", "https://iphak.mju.ac.kr/pages/?b=B_1_1&bn=30136&m=read&p=9"], ["입학처", "https://iphak.mju.ac.kr/"], ["입시결과", "https://iphak.mju.ac.kr/pages/?b=B_1_1"]]
   },
   {
-    id: "hansung", short: "한성대", name: "한성대학교", tone: "#f3aeb1", focus: "한성인재 · 지역균형",
+    id: "hansung", short: "한성대", name: "한성대학교", tone: "#ef7d86", focus: "한성인재 · 지역균형",
     summary: "한성인재는 학생부 전 영역 서류 100%로 선발하며 면접은 없습니다. 지역균형은 학교장 추천을 받아 교과 100%로 선발하고 수능최저가 없습니다.",
     dates: ["원서 9.7 ~ 9.11", "한성인재 면접 없음", "수시 합격자 발표 12.18까지"],
     links: [["수시 모집요강", "https://enter.hansung.ac.kr/?board=dataroom%25&boardId=nonscheduled%2Fdownload%25&m1=menu00%25&m2=sub02%25"], ["2026 경쟁률", "https://enter.hansung.ac.kr/?board=dataroom%25&boardId=nonscheduled%2Fdownload%25&m1=menu00%25&m2=sub02%25&tabName=competition%25"], ["입시결과", "https://enter.hansung.ac.kr/?board=entrance_data%2Fresult%25&m1=menu08%25&m2=sub02%25"]]
@@ -74,6 +90,8 @@ const essaySteps = [
 ];
 
 const essayLinks = [
+  ["2026 출제범위·경향 정리", "https://blog.naver.com/shamec1/223893428593"],
+  ["건국대 공식 논술 자료실", "https://admission.konkuk.ac.kr/admission/37897/subview.do"],
   ["2022 논술가이드북", "https://admission.konkuk.ac.kr/admission/37897/subview.do?enc=Zm5jdDF8QEB8JTJGYmJzJTJGYWRtaXNzaW9uJTJGNjI4MiUyRjExNzcyNzYlMkZhcnRjbFZpZXcuZG8lM0Y%3D"],
   ["2023 모의논술·가이드북", "https://admission.konkuk.ac.kr/admission/37897/subview.do?enc=Zm5jdDF8QEB8JTJGYmJzJTJGYWRtaXNzaW9uJTJGNjI4MiUyRjExODAwMzklMkZhcnRjbFZpZXcuZG8lM0Y%3D"],
   ["2024 모의논술·가이드북", "https://admission.konkuk.ac.kr/admission/37897/subview.do?enc=Zm5jdDF8QEB8JTJGYmJzJTJGYWRtaXNzaW9uJTJGNjI4MiUyRjExODMyNjMlMkZhcnRjbFZpZXcuZG8lM0Y%3D"],
@@ -82,6 +100,7 @@ const essayLinks = [
 ];
 
 const baseEvents = [
+  ["2026-09-01", "ghent", "겐트대 2027년 3월학기 원서접수 시작", "일반전형·학교장추천전형 · 서류가 준비되는 대로 조기 제출 권장"],
   ["2026-09-07", "konkuk", "건국대 원서접수 시작", "9.11까지 · KU자기추천 / KU논술우수자 지원 정보 최종 확인"],
   ["2026-09-07", "seoultech", "서울과기대 원서접수 시작", "09:00 시작 · 9.11 18:00 마감"],
   ["2026-09-07", "mju", "명지대 원서접수 시작", "10:00 시작 · 9.11 17:00 마감"],
@@ -108,6 +127,7 @@ const baseEvents = [
   ["2026-11-28", "mju", "명지대 명지인재면접", "자연캠퍼스 모집단위"],
   ["2026-11-29", "seoultech", "서울과기대 기회균형 면접", "기회균형 전체(특수교육대상자 제외)"],
   ["2026-11-29", "mju", "명지대 명지인재면접", "인문캠퍼스 모집단위"],
+  ["2026-11-30", "ghent", "겐트대 우선지원 마감", "2027년 3월학기 우선지원 마감일"],
   ["2026-12-05", "cau", "중앙대 탐구형·성장형 면접", "12.5~12.6 · 전형/모집단위별 날짜 확인"],
   ["2026-12-05", "konkuk", "건국대 KU자기추천 면접 1일차", "이과·공과·일부 사회과학·사범계열 등"],
   ["2026-12-06", "konkuk", "건국대 KU자기추천 면접 2일차", "문과·건축·경영·일부 사회과학·수의·KU자유전공 등"],
@@ -117,7 +137,9 @@ const baseEvents = [
   ["2026-12-18", "kookmin", "국민대 최초합격 발표", "17:00 예정"],
   ["2026-12-18", "ssu", "숭실대 최초합격 발표", "10:00"],
   ["2026-12-18", "hansung", "한성대 수시 합격 발표 기한", "한성인재는 면접 없이 서류 100%"],
-  ["2026-12-21", "personal", "수시 최초합격자 문서등록", "대학별 등록 마감시각 확인 · 12.23까지"]
+  ["2026-12-21", "personal", "수시 최초합격자 문서등록", "대학별 등록 마감시각 확인 · 12.23까지"],
+  ["2026-12-31", "ghent", "겐트대 온라인 입학시험 응시 기한", "수학·화학 20문항 중 14점 이상 · 현행 시험제도 변경 가능성 확인"],
+  ["2027-01-31", "ghent", "겐트대 2027년 3월학기 최종지원 마감", "조기마감 가능 · 원서 제출 후 결과 통보까지 약 4~6주"]
 ];
 
 const portals = [
@@ -128,19 +150,19 @@ const portals = [
 ];
 
 const cutoffRows = [
-  { school:"중앙대", tone:"#ef9fc4", type:"탐구형인재", major:"화학공학과", cut50:"5.68", cut70:"5.86" },
-  { school:"중앙대", tone:"#ef9fc4", type:"탐구형인재", major:"융합공학부", cut50:"3.80", cut70:"5.50" },
-  { school:"건국대", tone:"#a9d9c8", type:"KU논술우수자", major:"화공·생명·에너지공학부", cut50:"2.04", cut70:"2.12" },
-  { school:"건국대", tone:"#a9d9c8", type:"KU논술우수자", major:"첨단바이오공학부", cut50:"2.17", cut70:"3.75" },
-  { school:"건국대", tone:"#a9d9c8", type:"KU논술우수자", major:"생물공학과", cut50:"1.96", cut70:"2.08" },
-  { school:"건국대", tone:"#a9d9c8", type:"KU논술우수자", major:"KU자유전공학부", cut50:"2.70", cut70:"3.27" },
-  { school:"국민대", tone:"#f0c49d", type:"국민프런티어", major:"지능형ICT융합전공", cut50:"2.77", cut70:"2.83" },
-  { school:"국민대", tone:"#f0c49d", type:"국민프런티어", major:"융합바이오공학과", cut50:"2.51", cut70:"2.59" },
-  { school:"국민대", tone:"#f0c49d", type:"국민프런티어", major:"임산생명공학과", cut50:"2.59", cut70:"2.66" },
-  { school:"서울과기대", tone:"#9fc8ef", type:"기회균형(기회균등)", major:"신소재공학과", cut50:"4.74", cut70:"4.74" },
-  { school:"서울과기대", tone:"#9fc8ef", type:"창의융합인재", major:"바이오메디컬학과", cut50:"6.72", cut70:"6.77" },
-  { school:"서울과기대", tone:"#9fc8ef", type:"학교생활우수자", major:"스마트ICT융합공학과", cut50:"2.58", cut70:"2.61" },
-  { school:"서울과기대", tone:"#9fc8ef", type:"학교생활우수자", major:"화공생명공학과", cut50:"2.65", cut70:"4.40" }
+  { school:"중앙대", tone:"#ef9fc4", type:"탐구형인재", major:"화학공학과", prevSeats:"10", currentSeats:"8", competition:"29.50", waitlist:"17", cut50:"5.68", cut70:"5.86" },
+  { school:"중앙대", tone:"#ef9fc4", type:"탐구형인재", major:"융합공학부", prevSeats:"12", currentSeats:"18", competition:"29.17", waitlist:"20", cut50:"3.80", cut70:"5.50" },
+  { school:"건국대", tone:"#72c9a5", type:"KU논술우수자", major:"화공·생명·에너지공학부", prevSeats:"19", currentSeats:"3", competition:"21.63", waitlist:"21", cut50:"2.04", cut70:"2.12" },
+  { school:"건국대", tone:"#72c9a5", type:"KU논술우수자", major:"첨단바이오공학부", prevSeats:"18", currentSeats:"3", competition:"23.11", waitlist:"2", cut50:"2.17", cut70:"3.75" },
+  { school:"건국대", tone:"#72c9a5", type:"KU논술우수자", major:"생물공학과", prevSeats:"15", currentSeats:"7", competition:"18.60", waitlist:"4", cut50:"1.96", cut70:"2.08" },
+  { school:"건국대", tone:"#72c9a5", type:"KU논술우수자", major:"KU자유전공학부", prevSeats:"183", currentSeats:"65", competition:"32.75", waitlist:"91", cut50:"2.70", cut70:"3.27" },
+  { school:"국민대", tone:"#f3a15a", type:"국민프런티어", major:"지능형ICT융합전공", prevSeats:"26", currentSeats:"26", competition:"10.23", waitlist:"24", cut50:"2.77", cut70:"2.83" },
+  { school:"국민대", tone:"#f3a15a", type:"국민프런티어", major:"융합바이오공학과", prevSeats:"10", currentSeats:"10", competition:"36.10", waitlist:"3", cut50:"2.51", cut70:"2.59" },
+  { school:"국민대", tone:"#f3a15a", type:"국민프런티어", major:"임산생명공학과", currentMajor:"바이오소재융합공학과", prevSeats:"11", currentSeats:"15", competition:"23.82", waitlist:"3", cut50:"2.59", cut70:"2.66" },
+  { school:"서울과기대", tone:"#70afe9", type:"기회균형(기회균등)", major:"신소재공학과", prevSeats:"4", currentSeats:"4", competition:"9.00", waitlist:"1", cut50:"4.74", cut70:"4.74" },
+  { school:"서울과기대", tone:"#70afe9", type:"창의융합인재", major:"바이오메디컬학과", prevSeats:"14", currentSeats:"12", competition:"45.90", waitlist:"4", cut50:"6.72", cut70:"6.77" },
+  { school:"서울과기대", tone:"#70afe9", type:"학교생활우수자", major:"스마트ICT융합공학과", currentMajor:"ICT융합공학과", prevSeats:"14", currentSeats:"14", competition:"26.60", waitlist:"5", cut50:"2.58", cut70:"2.61" },
+  { school:"서울과기대", tone:"#70afe9", type:"학교생활우수자", major:"화공생명공학과", prevSeats:"16", currentSeats:"17", competition:"45.60", waitlist:"19", cut50:"2.65", cut70:"4.40" }
 ];
 
 const scoreSubjects = ["국어", "수학", "영어", "탐구1", "탐구2"];
@@ -163,7 +185,7 @@ function renderDday() { const diff = Math.ceil((new Date("2026-09-07T00:00:00+09
 function renderInterview() { document.querySelector("#interviewGuide").innerHTML = interviewGuide.map(([n,t,d]) => `<article class="guide-card"><span>${n}</span><div><h3>${t}</h3><p>${d}</p></div></article>`).join(""); }
 function renderEssay() { document.querySelector("#essaySteps").innerHTML = essaySteps.map(([n,t,d]) => `<article class="essay-step"><span>${n}</span><div><h3>${t}</h3><p>${d}</p></div></article>`).join(""); document.querySelector("#essayLinks").innerHTML = essayLinks.map(([l,h]) => `<a href="${h}" target="_blank" rel="noreferrer">${l}<span>↗</span></a>`).join(""); }
 function renderScores() { const saved = store.get("haeun-scores-v2", {}); document.querySelector("#scoreGrid").innerHTML = scoreSubjects.map((s) => `<label class="score-card"><span>${s}</span><select data-score="${s}">${[1,2,3,4,5].map((g) => `<option value="${g}" ${String(g) === (saved[s] || "2") ? "selected" : ""}>${g}등급</option>`).join("")}</select></label>`).join(""); }
-function renderSchools() { document.querySelector("#schoolGrid").innerHTML = schools.map((s) => `<article class="school-card" style="--tone:${s.tone}"><div class="school-head"><div><span class="school-kicker">${s.short}</span><h3>${s.name}</h3><p>${s.focus}</p></div><span class="dot"></span></div><p class="school-summary">${s.summary}</p><ul>${s.dates.map((d) => `<li>${d}</li>`).join("")}</ul><div class="link-row">${s.links.map(([l,h]) => `<a href="${h}" target="_blank" rel="noreferrer">${l}</a>`).join("")}</div></article>`).join(""); }
+function renderSchools() { document.querySelector("#schoolGrid").innerHTML = schools.map((s) => `<article class="school-card ${s.wide ? "school-card-wide" : ""}" style="--tone:${s.tone}"><div class="school-head"><div><span class="school-kicker">${s.short}</span><h3>${s.name}</h3><p>${s.focus}</p></div><span class="dot"></span></div><p class="school-summary">${s.summary}</p><ul>${s.dates.map((d) => `<li>${d}</li>`).join("")}</ul>${s.requirements ? `<div class="school-requirements">${s.requirements.map((group) => `<section><h4>${group.title}</h4><ul>${group.items.map((item) => `<li>${item}</li>`).join("")}</ul></section>`).join("")}</div>` : ""}<div class="link-row">${s.links.map(([l,h]) => `<a href="${h}" target="_blank" rel="noreferrer">${l}</a>`).join("")}</div></article>`).join(""); }
 function renderFilters() { document.querySelector("#schoolFilters").innerHTML = `<button class="filter-button active" data-school="all">전체</button>${schools.map((s) => `<button class="filter-button" style="--tone:${s.tone}" data-school="${s.id}"><span class="color-swatch" aria-hidden="true"></span>${s.short}</button>`).join("")}`; document.querySelector("#eventSchool").innerHTML = `${schools.map((s) => `<option value="${s.id}">${s.short}</option>`).join("")}<option value="personal">개인 공통</option>`; }
 function events() { return [...baseEvents.map(([date,schoolId,title,memo], index) => ({ id:`base-${index}`, date, school:schoolId, title, memo, custom:false })), ...customEvents].sort((a,b) => a.date.localeCompare(b.date)); }
 function eventCategory(title) {
@@ -172,6 +194,8 @@ function eventCategory(title) {
   if (title.includes("1단계 발표")) return "1단계 합격발표";
   if (title.includes("면접")) return "면접";
   if (title.includes("논술")) return "논술";
+  if (title.includes("입학시험") || title.includes("시험 응시")) return "입학시험";
+  if (title.includes("지원 마감") || title.includes("우선지원")) return "지원 마감";
   if (title.includes("합격") && title.includes("발표")) return "최종 합격발표";
   if (title.includes("등록")) return "등록";
   return "기타 일정";
@@ -202,7 +226,7 @@ function renderTimeline() {
 }
 function renderTasks() { document.querySelector("#taskList").innerHTML = tasks.length ? tasks.map((t) => `<article class="task-item ${t.done ? "done" : ""}"><input type="checkbox" data-task-check="${t.id}" ${t.done ? "checked" : ""} aria-label="완료 체크" /><div><strong>${t.title}</strong><p>${t.area}${t.due ? ` · ${formatDate(t.due)}` : ""}</p></div><button type="button" data-task-delete="${t.id}" aria-label="계획 삭제">삭제</button></article>`).join("") : `<p class="empty">아직 저장한 계획이 없어요.</p>`; }
 function renderPortals() { document.querySelector("#portalGrid").innerHTML = portals.map(([t,d,h,l],i) => `<article class="portal-card"><span>0${i+1}</span><h3>${t}</h3><p>${d}</p><a href="${h}" target="_blank" rel="noreferrer">${l} ↗</a></article>`).join(""); }
-function renderCutoffs() { document.querySelector("#cutoffTable").innerHTML = cutoffRows.map((row) => `<tr style="--tone:${row.tone}"><td class="cutoff-school"><span aria-hidden="true"></span>${row.school}</td><td class="cutoff-type">${row.type}</td><td>${row.major}</td><td class="cutoff-score">${row.cut50}등급</td><td class="cutoff-score">${row.cut70}등급</td></tr>`).join(""); }
+function renderCutoffs() { document.querySelector("#cutoffTable").innerHTML = cutoffRows.map((row) => `<tr style="--tone:${row.tone}"><td class="cutoff-school"><span aria-hidden="true"></span>${row.school}</td><td class="cutoff-type">${row.type}</td><td class="cutoff-major"><strong>${row.major}</strong>${row.currentMajor ? `<small>2027 명칭: ${row.currentMajor}</small>` : ""}</td><td class="cutoff-number">${row.prevSeats}명</td><td class="cutoff-number current">${row.currentSeats}명</td><td class="cutoff-number">${row.competition}:1</td><td class="cutoff-number">${row.waitlist}명</td><td class="cutoff-score">${row.cut50}등급</td><td class="cutoff-score">${row.cut70}등급</td></tr>`).join(""); }
 
 const tabNames = new Set(["interview", "essay", "schools", "calendar", "tasks", "sources"]);
 function openTab(name, { updateHash = true, scroll = false } = {}) {
