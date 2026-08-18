@@ -176,6 +176,8 @@ let tasks = store.get("haeun-tasks-v2", [
   { id: crypto.randomUUID(), area: "논술", title: "건국대 2022 기출 1회 시간 재고 풀기", due: "2026-08-30", done: false },
   { id: crypto.randomUUID(), area: "수능", title: "국어·수학 오답 30분씩 복습", due: "", done: false }
 ]);
+let studyRecords = store.get("haeun-study-records-v1", {});
+let studyDate = dateKey(new Date());
 
 function school(id) { return schools.find((item) => item.id === id) || { name: "개인", short: "개인", tone: "#d9b8ef" }; }
 function formatDate(value) { return new Intl.DateTimeFormat("ko-KR", { year: "numeric", month: "2-digit", day: "2-digit", weekday: "short" }).format(new Date(`${value}T00:00:00`)); }
@@ -226,6 +228,31 @@ function renderTimeline() {
   renderDetailSchedule(visibleEvents);
 }
 function renderTasks() { document.querySelector("#taskList").innerHTML = tasks.length ? tasks.map((t) => `<article class="task-item ${t.done ? "done" : ""}"><input type="checkbox" data-task-check="${t.id}" ${t.done ? "checked" : ""} aria-label="완료 체크" /><div><strong>${t.title}</strong><p>${t.area}${t.due ? ` · ${formatDate(t.due)}` : ""}</p></div><button type="button" data-task-delete="${t.id}" aria-label="계획 삭제">삭제</button></article>`).join("") : `<p class="empty">아직 저장한 계획이 없어요.</p>`; }
+function studyRecord(date = studyDate) { return studyRecords[date] || { wake:"", sleep:"", memo:"", entries:[] }; }
+function studyMinutes(entry) { if (!entry.start || !entry.end) return 0; const [startHour,startMinute] = entry.start.split(":").map(Number); const [endHour,endMinute] = entry.end.split(":").map(Number); const start = startHour * 60 + startMinute; const end = endHour * 60 + endMinute; if (start === end) return 0; return end > start ? end - start : end + 1440 - start; }
+function formatStudyMinutes(minutes) { return `${Math.floor(minutes / 60)}시간 ${minutes % 60}분`; }
+function saveStudyRecord(record) { studyRecords[studyDate] = record; store.set("haeun-study-records-v1", studyRecords); const state = document.querySelector("#studySaveState"); if (state) state.textContent = `저장됨 · ${new Intl.DateTimeFormat("ko-KR", { hour:"2-digit", minute:"2-digit" }).format(new Date())}`; }
+function renderStudyPlanner() {
+  const record = studyRecord();
+  const entries = record.entries || [];
+  document.querySelector("#studyDate").value = studyDate;
+  document.querySelector("#studyDateLabel").textContent = formatDate(studyDate);
+  document.querySelector("#wakeTime").value = record.wake || "";
+  document.querySelector("#sleepTime").value = record.sleep || "";
+  document.querySelector("#dailyMemo").value = record.memo || "";
+  document.querySelector("#studyTotal").textContent = formatStudyMinutes(entries.reduce((sum, entry) => sum + studyMinutes(entry), 0));
+  document.querySelector("#studyCount").textContent = `기록 ${entries.length}개 · 완료 ${entries.filter((entry) => entry.done).length}개`;
+  document.querySelector("#studyEntryList").innerHTML = entries.length ? entries.map((entry) => `<article class="study-entry ${entry.done ? "done" : ""}"><input type="checkbox" data-study-check="${entry.id}" ${entry.done ? "checked" : ""} aria-label="${escapeHtml(entry.content)} 완료 체크" /><div><span>${escapeHtml(entry.area)}</span><strong>${escapeHtml(entry.content)}</strong></div><time>${entry.start}–${entry.end}</time><b>${formatStudyMinutes(studyMinutes(entry))}</b><button type="button" data-study-delete="${entry.id}" aria-label="${escapeHtml(entry.content)} 삭제">×</button></article>`).join("") : `<p class="study-empty">이 날짜에 기록한 공부가 아직 없어요. 첫 공부를 추가해 보세요.</p>`;
+}
+function moveStudyDate(days) { const next = new Date(`${studyDate}T00:00:00`); next.setDate(next.getDate() + days); studyDate = dateKey(next); renderStudyPlanner(); }
+function renderStudySearch(query) {
+  const results = document.querySelector("#studySearchResults");
+  const keyword = query.trim().toLowerCase();
+  if (!keyword) { results.hidden = true; results.innerHTML = ""; return; }
+  const matches = Object.entries(studyRecords).filter(([date,record]) => `${date} ${record.memo || ""} ${(record.entries || []).map((entry) => `${entry.area} ${entry.content}`).join(" ")}`.toLowerCase().includes(keyword)).sort(([a],[b]) => b.localeCompare(a)).slice(0, 12);
+  results.hidden = false;
+  results.innerHTML = matches.length ? matches.map(([date,record]) => { const total = (record.entries || []).reduce((sum, entry) => sum + studyMinutes(entry), 0); const preview = (record.entries || []).map((entry) => entry.content).join(", ") || record.memo || "생활 시간 기록"; return `<button type="button" data-study-date-result="${date}"><strong>${formatDate(date)}</strong><span>${escapeHtml(preview)}</span><b>${formatStudyMinutes(total)}</b></button>`; }).join("") : `<p>검색된 기록이 없어요.</p>`;
+}
 function renderPortals() { document.querySelector("#portalGrid").innerHTML = portals.map(([t,d,h,l],i) => `<article class="portal-card"><span>0${i+1}</span><h3>${t}</h3><p>${d}</p><a href="${h}" target="_blank" rel="noreferrer">${l} ↗</a></article>`).join(""); }
 function renderCutoffs() { document.querySelector("#cutoffTable").innerHTML = cutoffRows.map((row) => `<tr style="--tone:${row.tone}"><td class="cutoff-school"><span aria-hidden="true"></span>${row.school}</td><td class="cutoff-type">${row.type}</td><td class="cutoff-major"><strong>${row.major}</strong>${row.currentMajor ? `<small>2027 명칭: ${row.currentMajor}</small>` : ""}</td><td class="cutoff-number">${row.prevSeats}명</td><td class="cutoff-number current">${row.currentSeats}명</td><td class="cutoff-number">${row.competition}:1</td><td class="cutoff-number">${row.waitlist}명</td><td class="cutoff-score">${row.cut50}등급</td><td class="cutoff-score">${row.cut70}등급</td></tr>`).join(""); }
 
@@ -247,6 +274,7 @@ function openTab(name, { updateHash = true, scroll = false } = {}) {
 document.addEventListener("submit", (event) => {
   if (event.target.id === "eventForm") { event.preventDefault(); const selectedDate = eventDate.value; customEvents.push({ id:crypto.randomUUID(), school:eventSchool.value, date:selectedDate, title:eventTitle.value.trim(), memo:eventMemo.value.trim() || "개인 추가 일정", custom:true }); calendarCursor = new Date(`${selectedDate}T00:00:00`); store.set("haeun-events-v2", customEvents); event.target.reset(); renderTimeline(); }
   if (event.target.id === "taskForm") { event.preventDefault(); tasks.unshift({ id:crypto.randomUUID(), area:taskArea.value, title:taskTitle.value.trim(), due:taskDue.value, done:false }); store.set("haeun-tasks-v2", tasks); event.target.reset(); renderTasks(); }
+  if (event.target.id === "studyEntryForm") { event.preventDefault(); const record = studyRecord(); record.entries = [...(record.entries || []), { id:crypto.randomUUID(), area:studyArea.value, content:studyContent.value.trim(), start:studyStart.value, end:studyEnd.value, done:false }]; saveStudyRecord(record); event.target.reset(); renderStudyPlanner(); }
 });
 document.addEventListener("click", (event) => {
   const tab = event.target.closest("[data-tab]"); if (tab) { openTab(tab.dataset.tab, { scroll:true }); }
@@ -258,6 +286,11 @@ document.addEventListener("click", (event) => {
   const filter = event.target.closest("[data-school]"); if (filter) { activeSchool = filter.dataset.school; document.querySelectorAll(".filter-button").forEach((b) => b.classList.toggle("active", b.dataset.school === activeSchool)); renderTimeline(); }
   const de = event.target.closest("[data-delete-event]"); if (de) { customEvents = customEvents.filter((e) => e.id !== de.dataset.deleteEvent); store.set("haeun-events-v2", customEvents); renderTimeline(); }
   const dt = event.target.closest("[data-task-delete]"); if (dt) { tasks = tasks.filter((t) => t.id !== dt.dataset.taskDelete); store.set("haeun-tasks-v2", tasks); renderTasks(); }
+  if (event.target.closest("#studyPrev")) moveStudyDate(-1);
+  if (event.target.closest("#studyNext")) moveStudyDate(1);
+  if (event.target.closest("#studyToday")) { studyDate = dateKey(new Date()); renderStudyPlanner(); }
+  const studyResult = event.target.closest("[data-study-date-result]"); if (studyResult) { studyDate = studyResult.dataset.studyDateResult; document.querySelector("#studySearch").value = ""; renderStudySearch(""); renderStudyPlanner(); document.querySelector("#studyPlannerTitle").scrollIntoView({ behavior:"smooth", block:"start" }); }
+  const studyDelete = event.target.closest("[data-study-delete]"); if (studyDelete) { const record = studyRecord(); record.entries = (record.entries || []).filter((entry) => entry.id !== studyDelete.dataset.studyDelete); saveStudyRecord(record); renderStudyPlanner(); }
 });
 document.querySelector("#pageTabs").addEventListener("keydown", (event) => {
   if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) return;
@@ -272,6 +305,13 @@ window.addEventListener("hashchange", () => openTab(location.hash.slice(1), { up
 document.addEventListener("change", (event) => {
   if (event.target.matches("[data-score]")) { const saved = store.get("haeun-scores-v2", {}); saved[event.target.dataset.score] = event.target.value; store.set("haeun-scores-v2", saved); }
   if (event.target.matches("[data-task-check]")) { tasks = tasks.map((t) => t.id === event.target.dataset.taskCheck ? {...t, done:event.target.checked} : t); store.set("haeun-tasks-v2", tasks); renderTasks(); }
+  if (event.target.id === "studyDate" && event.target.value) { studyDate = event.target.value; renderStudyPlanner(); }
+  if (event.target.id === "wakeTime" || event.target.id === "sleepTime") { const record = studyRecord(); record[event.target.id === "wakeTime" ? "wake" : "sleep"] = event.target.value; saveStudyRecord(record); }
+  if (event.target.matches("[data-study-check]")) { const record = studyRecord(); record.entries = (record.entries || []).map((entry) => entry.id === event.target.dataset.studyCheck ? {...entry, done:event.target.checked} : entry); saveStudyRecord(record); renderStudyPlanner(); }
+});
+document.addEventListener("input", (event) => {
+  if (event.target.id === "dailyMemo") { const record = studyRecord(); record.memo = event.target.value; saveStudyRecord(record); }
+  if (event.target.id === "studySearch") renderStudySearch(event.target.value);
 });
 
-renderDday(); renderInterview(); renderEssay(); renderScores(); renderSchools(); renderFilters(); renderTimeline(); renderTasks(); renderPortals(); renderCutoffs(); openTab(location.hash.slice(1), { updateHash:false });
+renderDday(); renderInterview(); renderEssay(); renderScores(); renderSchools(); renderFilters(); renderTimeline(); renderTasks(); renderStudyPlanner(); renderPortals(); renderCutoffs(); openTab(location.hash.slice(1), { updateHash:false });
