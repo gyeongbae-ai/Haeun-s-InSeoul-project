@@ -166,7 +166,8 @@ const cutoffRows = [
 ];
 
 const scoreSubjects = ["국어", "수학", "영어", "탐구1", "탐구2"];
-const store = { get(key, fallback) { try { return JSON.parse(localStorage.getItem(key)) ?? fallback; } catch { return fallback; } }, set(key, value) { localStorage.setItem(key, JSON.stringify(value)); } };
+const cloudSyncedKeys = new Set(["haeun-events-v2", "haeun-tasks-v2", "haeun-scores-v2", "haeun-study-records-v1"]);
+const store = { get(key, fallback) { try { return JSON.parse(localStorage.getItem(key)) ?? fallback; } catch { return fallback; } }, set(key, value) { localStorage.setItem(key, JSON.stringify(value)); if (cloudSyncedKeys.has(key)) scheduleCloudSave(); } };
 let activeSchool = "all";
 let customEvents = store.get("haeun-events-v2", []);
 let calendarCursor = new Date(2026, 8, 1);
@@ -178,11 +179,52 @@ let tasks = store.get("haeun-tasks-v2", [
 ]);
 let studyRecords = store.get("haeun-study-records-v1", {});
 let studyDate = dateKey(new Date());
+const cloudConfig = window.HAEUN_SUPABASE_CONFIG;
+let cloudCode = localStorage.getItem("haeun-sync-code-v1") || "";
+let cloudConnected = false;
+let cloudSaveTimer;
+let cloudPollTimer;
 
 function school(id) { return schools.find((item) => item.id === id) || { name: "개인", short: "개인", tone: "#d9b8ef" }; }
 function formatDate(value) { return new Intl.DateTimeFormat("ko-KR", { year: "numeric", month: "2-digit", day: "2-digit", weekday: "short" }).format(new Date(`${value}T00:00:00`)); }
 function dateKey(date) { return `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,"0")}-${String(date.getDate()).padStart(2,"0")}`; }
 function escapeHtml(value) { return String(value).replace(/[&<>"']/g, (char) => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#039;" })[char]); }
+function cloudHeaders(code = cloudCode) { return { apikey:cloudConfig.key, Authorization:`Bearer ${cloudConfig.key}`, "Content-Type":"application/json", "x-haeun-sync-key":code }; }
+function cloudPayload() { return { version:1, events:store.get("haeun-events-v2", customEvents), tasks:store.get("haeun-tasks-v2", tasks), scores:store.get("haeun-scores-v2", {}), studyRecords:store.get("haeun-study-records-v1", studyRecords) }; }
+function setCloudStatus(message, state = "idle") { const status = document.querySelector("#cloudSyncStatus"); const dot = document.querySelector("#cloudDot"); if (status) status.textContent = message; if (dot) dot.dataset.state = state; }
+function showCloudConnected(connected) { document.querySelector("#cloudSyncForm").hidden = connected; document.querySelector("#cloudSyncActions").hidden = !connected; }
+async function cloudFetch(code = cloudCode) { const response = await fetch(`${cloudConfig.url}/rest/v1/haeun_state?id=eq.primary&select=payload,updated_at`, { headers:cloudHeaders(code), cache:"no-store" }); if (!response.ok) throw new Error("동기화 서버에서 기록을 읽지 못했습니다."); return response.json(); }
+function applyCloudPayload(payload) {
+  if (payload.events) { customEvents = payload.events; localStorage.setItem("haeun-events-v2", JSON.stringify(customEvents)); }
+  if (payload.tasks) { tasks = payload.tasks; localStorage.setItem("haeun-tasks-v2", JSON.stringify(tasks)); }
+  if (payload.scores) localStorage.setItem("haeun-scores-v2", JSON.stringify(payload.scores));
+  if (payload.studyRecords) { studyRecords = payload.studyRecords; localStorage.setItem("haeun-study-records-v1", JSON.stringify(studyRecords)); }
+  renderScores(); renderTimeline(); renderTasks(); renderStudyPlanner();
+}
+async function pushCloudState() {
+  if (!cloudConnected) return;
+  setCloudStatus("변경 내용을 저장하는 중입니다.", "syncing");
+  const response = await fetch(`${cloudConfig.url}/rest/v1/haeun_state?on_conflict=id`, { method:"POST", headers:{ ...cloudHeaders(), Prefer:"resolution=merge-duplicates,return=minimal" }, body:JSON.stringify({ id:"primary", payload:cloudPayload(), updated_at:new Date().toISOString() }) });
+  if (!response.ok) throw new Error("동기화 코드가 맞지 않거나 서버 저장에 실패했습니다.");
+  setCloudStatus("Supabase에 저장됨 · 모든 기기에서 같은 기록을 사용합니다.", "connected");
+}
+function scheduleCloudSave() { if (!cloudConnected) return; clearTimeout(cloudSaveTimer); cloudSaveTimer = setTimeout(() => { cloudSaveTimer = undefined; pushCloudState().catch((error) => setCloudStatus(error.message, "error")); }, 700); }
+async function pullCloudState({ quiet = false } = {}) { const rows = await cloudFetch(); if (rows[0]?.payload) applyCloudPayload(rows[0].payload); if (!quiet) setCloudStatus("최신 기록을 불러왔습니다.", "connected"); }
+async function connectCloud(code) {
+  if (!cloudConfig?.url || !cloudConfig?.key) throw new Error("Supabase 연결 설정을 찾지 못했습니다.");
+  setCloudStatus("동기화 코드를 확인하는 중입니다.", "syncing");
+  const rows = await cloudFetch(code);
+  cloudCode = code;
+  cloudConnected = true;
+  if (rows[0]?.payload) applyCloudPayload(rows[0].payload); else await pushCloudState();
+  localStorage.setItem("haeun-sync-code-v1", cloudCode);
+  document.querySelector("#cloudSyncCode").value = "";
+  showCloudConnected(true);
+  setCloudStatus("Supabase 연결 완료 · 모든 기기에서 같은 기록을 사용합니다.", "connected");
+  clearInterval(cloudPollTimer); cloudPollTimer = setInterval(() => { if (!cloudSaveTimer) pullCloudState({ quiet:true }).catch(() => {}); }, 30000);
+}
+function disconnectCloud() { cloudConnected = false; cloudCode = ""; clearTimeout(cloudSaveTimer); clearInterval(cloudPollTimer); localStorage.removeItem("haeun-sync-code-v1"); showCloudConnected(false); setCloudStatus("연결이 해제됐습니다. 이 기기의 기록은 그대로 남아 있습니다."); }
+function initCloudSync() { showCloudConnected(false); if (cloudCode) connectCloud(cloudCode).catch((error) => { localStorage.removeItem("haeun-sync-code-v1"); cloudCode = ""; setCloudStatus(error.message, "error"); }); }
 function ddayLabel(date) { const diff = Math.ceil((new Date(`${date}T00:00:00+09:00`) - new Date()) / 86400000); return diff >= 0 ? `D-${diff}` : `D+${Math.abs(diff)}`; }
 function renderDday() { document.querySelector("#ghentDdayCount").textContent = ddayLabel("2026-09-01"); document.querySelector("#universityDdayCount").textContent = ddayLabel("2026-09-07"); }
 function renderInterview() { document.querySelector("#interviewGuide").innerHTML = interviewGuide.map(([n,t,d]) => `<article class="guide-card"><span>${n}</span><div><h3>${t}</h3><p>${d}</p></div></article>`).join(""); }
@@ -272,6 +314,7 @@ function openTab(name, { updateHash = true, scroll = false } = {}) {
 }
 
 document.addEventListener("submit", (event) => {
+  if (event.target.id === "cloudSyncForm") { event.preventDefault(); const code = document.querySelector("#cloudSyncCode").value.trim(); connectCloud(code).catch((error) => { cloudConnected = false; showCloudConnected(false); setCloudStatus(error.message, "error"); }); }
   if (event.target.id === "eventForm") { event.preventDefault(); const selectedDate = eventDate.value; customEvents.push({ id:crypto.randomUUID(), school:eventSchool.value, date:selectedDate, title:eventTitle.value.trim(), memo:eventMemo.value.trim() || "개인 추가 일정", custom:true }); calendarCursor = new Date(`${selectedDate}T00:00:00`); store.set("haeun-events-v2", customEvents); event.target.reset(); renderTimeline(); }
   if (event.target.id === "taskForm") { event.preventDefault(); tasks.unshift({ id:crypto.randomUUID(), area:taskArea.value, title:taskTitle.value.trim(), due:taskDue.value, done:false }); store.set("haeun-tasks-v2", tasks); event.target.reset(); renderTasks(); }
   if (event.target.id === "studyEntryForm") { event.preventDefault(); const record = studyRecord(); record.entries = [...(record.entries || []), { id:crypto.randomUUID(), area:studyArea.value, content:studyContent.value.trim(), start:studyStart.value, end:studyEnd.value, done:false }]; saveStudyRecord(record); event.target.reset(); renderStudyPlanner(); }
@@ -291,6 +334,8 @@ document.addEventListener("click", (event) => {
   if (event.target.closest("#studyToday")) { studyDate = dateKey(new Date()); renderStudyPlanner(); }
   const studyResult = event.target.closest("[data-study-date-result]"); if (studyResult) { studyDate = studyResult.dataset.studyDateResult; document.querySelector("#studySearch").value = ""; renderStudySearch(""); renderStudyPlanner(); document.querySelector("#studyPlannerTitle").scrollIntoView({ behavior:"smooth", block:"start" }); }
   const studyDelete = event.target.closest("[data-study-delete]"); if (studyDelete) { const record = studyRecord(); record.entries = (record.entries || []).filter((entry) => entry.id !== studyDelete.dataset.studyDelete); saveStudyRecord(record); renderStudyPlanner(); }
+  if (event.target.closest("#cloudSyncNow")) pullCloudState().catch((error) => setCloudStatus(error.message, "error"));
+  if (event.target.closest("#cloudDisconnect")) disconnectCloud();
 });
 document.querySelector("#pageTabs").addEventListener("keydown", (event) => {
   if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) return;
@@ -314,4 +359,4 @@ document.addEventListener("input", (event) => {
   if (event.target.id === "studySearch") renderStudySearch(event.target.value);
 });
 
-renderDday(); renderInterview(); renderEssay(); renderScores(); renderSchools(); renderFilters(); renderTimeline(); renderTasks(); renderStudyPlanner(); renderPortals(); renderCutoffs(); openTab(location.hash.slice(1), { updateHash:false });
+renderDday(); renderInterview(); renderEssay(); renderScores(); renderSchools(); renderFilters(); renderTimeline(); renderTasks(); renderStudyPlanner(); renderPortals(); renderCutoffs(); openTab(location.hash.slice(1), { updateHash:false }); initCloudSync();
