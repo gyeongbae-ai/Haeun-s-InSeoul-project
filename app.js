@@ -225,6 +225,17 @@ async function connectCloud(code) {
 }
 function disconnectCloud() { cloudConnected = false; cloudCode = ""; clearTimeout(cloudSaveTimer); clearInterval(cloudPollTimer); localStorage.removeItem("haeun-sync-code-v1"); showCloudConnected(false); setCloudStatus("연결이 해제됐습니다. 이 기기의 기록은 그대로 남아 있습니다."); }
 function initCloudSync() { showCloudConnected(false); if (cloudCode) connectCloud(cloudCode).catch((error) => { localStorage.removeItem("haeun-sync-code-v1"); cloudCode = ""; setCloudStatus(error.message, "error"); }); }
+function initCursorBubble() {
+  const bubble = document.querySelector("#cursorBubble");
+  if (!bubble || !matchMedia("(pointer: fine)").matches) return;
+  let frame;
+  document.addEventListener("pointermove", (event) => {
+    cancelAnimationFrame(frame);
+    frame = requestAnimationFrame(() => { bubble.style.setProperty("--cursor-x", `${event.clientX}px`); bubble.style.setProperty("--cursor-y", `${event.clientY}px`); bubble.classList.add("visible"); bubble.classList.toggle("interactive", Boolean(event.target.closest?.("a,button,input,select,textarea,label"))); });
+  });
+  document.addEventListener("pointerdown", () => { bubble.classList.add("burst"); setTimeout(() => bubble.classList.remove("burst"), 220); });
+  document.addEventListener("mouseout", (event) => { if (!event.relatedTarget) bubble.classList.remove("visible"); });
+}
 function ddayLabel(date) { const diff = Math.ceil((new Date(`${date}T00:00:00+09:00`) - new Date()) / 86400000); return diff >= 0 ? `D-${diff}` : `D+${Math.abs(diff)}`; }
 function renderDday() { document.querySelector("#ghentDdayCount").textContent = ddayLabel("2026-09-01"); document.querySelector("#universityDdayCount").textContent = ddayLabel("2026-09-07"); }
 function renderInterview() { document.querySelector("#interviewGuide").innerHTML = interviewGuide.map(([n,t,d]) => `<article class="guide-card"><span>${n}</span><div><h3>${t}</h3><p>${d}</p></div></article>`).join(""); }
@@ -359,4 +370,4 @@ document.addEventListener("input", (event) => {
   if (event.target.id === "studySearch") renderStudySearch(event.target.value);
 });
 
-renderDday(); renderInterview(); renderEssay(); renderScores(); renderSchools(); renderFilters(); renderTimeline(); renderTasks(); renderStudyPlanner(); renderPortals(); renderCutoffs(); openTab(location.hash.slice(1), { updateHash:false }); initCloudSync();
+renderDday(); renderInterview(); renderEssay(); renderScores(); renderSchools(); renderFilters(); renderTimeline(); renderTasks(); renderStudyPlanner(); renderPortals(); renderCutoffs(); openTab(location.hash.slice(1), { updateHash:false }); initCloudSync(); initCursorBubble();

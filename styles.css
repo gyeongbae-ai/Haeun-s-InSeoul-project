@@ -8,6 +8,16 @@ a { color:inherit; text-decoration:none; }
 button,input,select,textarea { font:inherit; letter-spacing:0; }
 button { cursor:pointer; }
 [hidden] { display:none !important; }
+.cursor-bubble { --cursor-x:-100px; --cursor-y:-100px; position:fixed; left:0; top:0; z-index:9999; width:64px; height:64px; pointer-events:none; border:2px solid rgba(225,103,158,.72); border-radius:50%; background:rgba(255,213,232,.12); box-shadow:0 0 0 7px rgba(185,153,221,.1),0 8px 22px rgba(157,91,151,.16); opacity:0; transform:translate3d(var(--cursor-x),var(--cursor-y),0) translate(-50%,-50%); transition:width .18s ease,height .18s ease,opacity .16s ease,border-width .18s ease; animation:cursor-bubble-color 4.8s ease-in-out infinite; }
+.cursor-bubble::before,.cursor-bubble::after { content:""; position:absolute; border:1px solid currentColor; border-radius:50%; background:rgba(255,255,255,.34); box-shadow:0 3px 8px rgba(113,74,119,.13); }
+.cursor-bubble::before { width:13px; height:13px; right:-8px; top:4px; color:#d8649d; }
+.cursor-bubble::after { width:8px; height:8px; left:3px; bottom:-7px; color:#75bca8; }
+.cursor-bubble.visible { opacity:1; }
+.cursor-bubble.interactive { width:78px; height:78px; border-width:3px; }
+.cursor-bubble.burst { width:94px; height:94px; }
+@keyframes cursor-bubble-color { 0%,100% { border-color:rgba(225,103,158,.76); background:rgba(255,213,232,.12); box-shadow:0 0 0 7px rgba(185,153,221,.1),0 8px 22px rgba(157,91,151,.16); } 40% { border-color:rgba(165,116,207,.74); background:rgba(226,210,247,.14); box-shadow:0 0 0 7px rgba(225,103,158,.09),0 8px 22px rgba(123,85,156,.16); } 70% { border-color:rgba(93,184,159,.72); background:rgba(207,242,232,.14); box-shadow:0 0 0 7px rgba(112,187,167,.1),0 8px 22px rgba(75,135,122,.15); } }
+@media (pointer:coarse) { .cursor-bubble { display:none; } }
+@media (prefers-reduced-motion:reduce) { .cursor-bubble { animation:none; transition:opacity .12s ease; } }
 
 .hero { min-height:720px; padding:24px clamp(20px,5vw,72px) 72px; background-color:#ead8f7; background-image:linear-gradient(90deg,rgba(255,255,255,.34) 50%,transparent 50%),linear-gradient(rgba(255,255,255,.34) 50%,transparent 50%); background-size:64px 64px; border-bottom:2px solid #d6bfeb; }
 .topbar { max-width:1220px; margin:0 auto; min-height:62px; padding:0 8px; display:flex; align-items:center; justify-content:space-between; gap:24px; border-bottom:1px solid rgba(63,46,71,.18); }
