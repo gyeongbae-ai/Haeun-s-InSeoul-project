@@ -3,6 +3,10 @@ const schools = [
     id: "cau", short: "중앙대", name: "중앙대학교", tone: "#ef9fc4", focus: "탐구형인재 · 융합형인재",
     summary: "탐구형인재는 1단계 서류 100%(3.5배수), 2단계 1단계 70% + 면접 30%. 융합형인재는 의학부 외 모집단위에서 서류 100% 일괄선발입니다.",
     dates: ["원서 9.8 10:00 ~ 9.11 18:00", "탐구형 1단계 11.26 14:00", "면접 12.5 ~ 12.6", "최초합격 12.18 14:00"],
+    majors: [
+      { name:"화학공학과", admissions:[["지역균형", "10명"], ["탐구형", "8명"], ["융합형", "5명"], ["성장형", "4명"], ["논술 일반형", "6명"], ["논술 창의형", "4명"]] },
+      { name:"융합공학부", admissions:[["지역균형", "23명"], ["탐구형", "18명"], ["융합형", "6명"], ["성장형", "6명"], ["논술 일반형", "7명"], ["논술 창의형", "4명"]] }
+    ],
     links: [
       ["2027 모집요강", "https://admission.cau.ac.kr/detail.do?board_seq=3239&menuurl=bmyV1ovIAzYtqDXLjUSVtw%3D%3D&pageNo=1"],
       ["2026 경쟁률", "https://admission.cau.ac.kr/submenu.do?menuurl=oG08risXFa2m%2BdEZZm03Xw%3D%3D"],
@@ -13,6 +17,10 @@ const schools = [
     id: "konkuk", short: "건국대", name: "건국대학교", tone: "#72c9a5", focus: "KU자기추천 · KU논술우수자",
     summary: "KU자기추천은 서류 100%(3배수) 후 1단계 70% + 면접 30%, 수능최저 없음. KU논술우수자는 논술 100%이며 모집단위별 수능최저를 확인해야 합니다.",
     dates: ["원서 9.7 ~ 9.11", "논술 11.21", "자기추천 면접 12.5 ~ 12.6", "최초합격 12.18까지"],
+    majors: [
+      { name:"화공·생명·에너지공학부", admissions:[["KU지역균형", "6명"], ["KU자기추천", "20명"], ["기회균형", "3명"], ["특성화고", "1명"], ["KU논술", "3명"]] },
+      { name:"생물공학과", admissions:[["KU지역균형", "3명"], ["KU자기추천", "15명"], ["기회균형", "2명"], ["특성화고", "1명"], ["KU논술", "7명"]] }
+    ],
     links: [
       ["2027 모집요강 PDF", "https://enter.konkuk.ac.kr/file/pdfDown.pdf?ofn=2027%ED%95%99%EB%85%84%EB%8F%84+%EA%B1%B4%EA%B5%AD%EB%8C%80%ED%95%99%EA%B5%90+%EC%88%98%EC%8B%9C%EB%AA%A8%EC%A7%91%EC%9A%94%EA%B0%95%28%EB%8B%A8%EB%A9%B4%29_%EC%B5%9C%EC%A2%85.pdf&sfn=20260625041927583_3601.pdf"],
       ["입학처", "https://enter.konkuk.ac.kr/"],
@@ -23,6 +31,9 @@ const schools = [
     id: "ghent", short: "겐트대", name: "겐트대학교 글로벌캠퍼스", tone: "#f0cc4e", focus: "2027년 3월학기 · 일반전형 · 학교장추천전형", wide: true,
     summary: "인천 송도에 있는 벨기에 겐트대학교 글로벌캠퍼스입니다. 선착순 심사 방식으로 원서를 받은 뒤 제출일 기준 약 4~6주 안에 결과를 이메일로 개별 안내합니다.",
     dates: ["원서접수 2026.9.1 시작", "우선지원 2026.11.30 마감", "온라인 입학시험 2026.12.31까지 응시 가능", "최종지원 2027.1.31 마감(조기마감 가능)", "합격 결과 원서 제출 후 4~6주 내 개별 통보"],
+    majors: [
+      { name:"응용생명공학 학부", note:"1·2학년 공통과정 후 분자생명공학(MBT)·환경공학(ET)·식품공학(FT) 중 전공 선택", admissions:[["일반·학교장추천", "전형별 별도 인원 없음"]] }
+    ],
     requirements: [
       { title:"학교장추천 필수서류", items:["증명사진 JPG·여권사본", "영문 졸업(예정) 또는 재학증명서", "영문 내신성적표·국문 생활기록부", "영문 본교 양식 학교장추천서"] },
       { title:"일반전형 필수서류", items:["증명사진 JPG·여권사본", "영문 졸업증명서·영문 성적증명서", "입학시험 14점 이상 또는 SAT 수학 720·ACT 수학 32 중 하나", "공인영어성적: TOEFL iBT 72·IELTS 6.0·IB 5·SAT 영어 500·ACT 영어 21·수능 영어 2등급 중 하나"] },
@@ -39,12 +50,26 @@ const schools = [
     id: "seoultech", short: "서울과기대", name: "서울과학기술대학교", tone: "#70afe9", focus: "학교생활우수자 · 창의융합인재 · 논술",
     summary: "학생부종합은 1단계 서류 100% 후 2단계 면접을 실시합니다. 논술전형은 논술 70% + 교과 30%로 선발하며 모집단위별 최저를 확인합니다.",
     dates: ["원서 9.7 09:00 ~ 9.11 18:00", "1단계 11.20 14:00", "논술 11.23 10:00", "면접 11.28 ~ 11.29", "최초합격 12.18 14:00"],
+    majors: [
+      { name:"화공생명공학과", admissions:[["학교생활우수자", "17명"]] },
+      { name:"바이오메디컬학과", admissions:[["창의융합인재", "12명"]] },
+      { name:"신소재공학과", admissions:[["기회균형", "4명"]] },
+      { name:"ICT융합공학과", admissions:[["학교생활우수자", "14명"]] }
+    ],
     links: [["입학처", "https://admission.seoultech.ac.kr/"], ["2027 모집요강", "https://ipsi.theschools.co.kr/cne_s/4/947.pdf"], ["입시결과", "https://admission.seoultech.ac.kr/"]]
   },
   {
     id: "kookmin", short: "국민대", name: "국민대학교", tone: "#f3a15a", focus: "국민프런티어 · 교과우수자",
     summary: "국민프런티어는 1단계 서류 100%(3배수), 2단계 1단계 70% + 면접 30%로 선발하며 수능최저가 없습니다. 2027학년도부터 임산생명공학과는 바이오소재융합공학과로 명칭이 바뀝니다.",
     dates: ["원서 9.7 10:00 ~ 9.11 18:00", "1단계 11.17 14:00", "자연계 면접 11.21", "인문·예체능 면접 11.22", "최초합격 12.18 17:00"],
+    majors: [
+      { name:"바이오소재융합공학과", admissions:[["교과우수자", "3명"], ["국민프런티어", "15명"], ["기회균형Ⅰ", "2명"], ["농어촌", "2명"]] },
+      { name:"바이오의과학과", admissions:[["교과우수자", "1명"], ["국민프런티어", "14명"], ["기회균형Ⅰ", "2명"], ["농어촌", "1명"]] },
+      { name:"식품영양학과", admissions:[["교과우수자", "2명"], ["국민프런티어", "13명"], ["기회균형Ⅰ", "2명"], ["농어촌", "1명"]] },
+      { name:"융합바이오공학과", admissions:[["교과우수자", "5명"], ["국민프런티어", "10명"], ["기회균형Ⅰ", "2명"], ["농어촌", "2명"]] },
+      { name:"제약공학과", admissions:[["교과우수자", "3명"], ["국민프런티어", "7명"]] },
+      { name:"에너지반도체화학공학과", admissions:[["교과우수자", "4명"], ["국민프런티어", "15명"], ["기회균형Ⅰ", "2명"], ["농어촌", "2명"]] }
+    ],
     links: [
       ["2027 모집요강", "https://admission.kookmin.ac.kr/nonschedule/notice.php?ctype=view&no=1070&page=1"],
       ["2026 경쟁률", "https://admission.kookmin.ac.kr/nonschedule/previousResult.php"],
@@ -52,22 +77,55 @@ const schools = [
     ]
   },
   {
-    id: "ssu", short: "숭실대", name: "숭실대학교", tone: "#ad8de0", focus: "SSU미래인재(면접형) · 논술우수자",
-    summary: "미래인재 면접형은 서류 100%(3~3.5배수) 후 1단계 50% + 면접 50%. 논술우수자는 논술 80% + 학생부교과 20%입니다.",
-    dates: ["원서 9.8 10:00 ~ 9.11 18:00", "논술 11.21", "1단계 11.23", "면접 11.27 ~ 11.28", "최초합격 12.18 10:00"],
-    links: [["2027 모집요강", "https://admission.ssu.ac.kr/mojip/req.asp?flag=1&page_no=1_2_2"], ["모집요강 PDF", "https://admission.ssu.ac.kr/upload/SSU%281%29_260617194254.pdf"], ["입시통계", "https://admission.ssu.ac.kr/"]]
+    id: "sejong", short: "세종대", name: "세종대학교", tone: "#5f91d8", focus: "세종인재 면접형·서류형 · 지역균형 · 논술",
+    summary: "세종인재 면접형은 1단계 서류 100%(3배수), 2단계 서류 60% + 면접 40%입니다. 세종인재 서류형은 서류 100%, 논술전형은 논술 70% + 학생부교과 30%로 선발합니다.",
+    dates: ["원서 9.8 10:00 ~ 9.11 18:00", "서류 9.14 18:00까지", "면접형 1단계 11.13 17:00 이후", "자연계 면접 11.22", "자연계 논술 11.29 14:00", "최초합격 12.18 17:00 이후"],
+    majors: [
+      { name:"화학과", admissions:[["지역균형", "4명"], ["세종인재 면접형", "5명"], ["논술", "4명"]] },
+      { name:"생명시스템학부", admissions:[["지역균형", "12명"], ["세종인재 면접형", "17명"], ["논술", "12명"]] },
+      { name:"스마트생명산업융합학과", admissions:[["지역균형", "4명"], ["세종인재 면접형", "4명"], ["세종인재 서류형", "4명"], ["기회균형", "4명"], ["논술", "4명"]] },
+      { name:"자연생명계열", admissions:[["세종인재 서류형", "31명"], ["기회균형", "11명"], ["사회기여", "6명"]] }
+    ],
+    links: [["2027 모집요강", "https://ipsi.sejong.ac.kr/sub_page/sub1/0106_view.asp?B_CATEGORY=0&B_CODE=BOARD_1455878015&IDX=1128&gotopage=100&search_category=&searchstring=&tab1=1"], ["모집요강 PDF", "https://ipsi.sejong.ac.kr/board/upload_file/pdf/20266159234314522.pdf"], ["입학처", "https://ipsi.sejong.ac.kr/"]]
+  },
+  {
+    id: "hufs", short: "한국외대", name: "한국외국어대학교 글로벌캠퍼스", tone: "#d65f72", focus: "학생부종합 면접형·서류형 · 학교장추천 · 논술",
+    summary: "면접형은 1단계 서류 100%(3배수), 2단계 서류 50% + 면접 50%입니다. 서류형은 서류 100%, 논술은 논술 100%이며 글로벌캠퍼스 자연계열 수능최저를 확인해야 합니다.",
+    dates: ["원서 9.8 10:00 ~ 9.11 17:00", "서류 9.14 17:00까지", "면접형 1단계 11.16", "글로벌캠퍼스 면접 11.22", "자연계 논술 11.29 15:00", "최초합격 12.18 14:00"],
+    majors: [
+      { name:"생명공학과", admissions:[["학교장추천", "4명"], ["면접형", "7명"], ["서류형", "9명"], ["기회균형", "4명"], ["논술", "4명"]] },
+      { name:"화학과", admissions:[["학교장추천", "4명"], ["면접형", "7명"], ["서류형", "9명"], ["기회균형", "4명"], ["논술", "4명"]] },
+      { name:"바이오메디컬공학부", admissions:[["학교장추천", "4명"], ["면접형", "7명"], ["서류형", "10명"], ["기회균형", "4명"], ["논술", "5명"]] },
+      { name:"글로벌바이오&비즈니스융합학부(송도)", admissions:[["서류형", "15명"]] }
+    ],
+    links: [["2027 모집요강", "https://adms.hufs.ac.kr/cms/FrBbsCon/BoardView.do?MENU_ID=380&CONTENTS_NO=5&SITE_NO=2&BOARD_SEQ=4&BBS_SEQ=21193"], ["모집요강 PDF", "https://adms.hufs.ac.kr/ajaxfile/FileCpnt/fileView.do?BBS_SEQ=83&BOARD_SEQ=6&SITE_NO=2&gbn=b02"], ["입학처", "https://adms.hufs.ac.kr/index.do"]]
+  },
+  {
+    id: "cau-davinci", short: "중앙대 다빈치", name: "중앙대학교 다빈치캠퍼스", tone: "#8fb94d", focus: "생명공학대학 · 탐구형인재 · 융합형인재",
+    summary: "중앙대 수시 모집요강을 함께 적용합니다. 관심 학과의 탐구형인재 면접은 모집단위에 따라 12월 5일 또는 6일이며, 전형별 캠퍼스와 고사일을 반드시 확인해야 합니다.",
+    dates: ["원서 9.8 10:00 ~ 9.11 18:00", "서류 9.15 16:00까지", "탐구형 1단계 11.26 14:00", "생명공학대학 면접 12.5 ~ 12.6", "최초합격 12.18 14:00"],
+    majors: [
+      { name:"생명공학대학 전공개방", admissions:[["지역균형", "65명"]] },
+      { name:"동물생명공학", admissions:[["지역균형", "10명"], ["탐구형", "9명"], ["융합형", "5명"], ["논술 일반형", "6명"]] },
+      { name:"식물생명공학", admissions:[["지역균형", "7명"], ["탐구형", "6명"], ["융합형", "5명"], ["논술 일반형", "6명"]] },
+      { name:"식품공학", admissions:[["지역균형", "10명"], ["탐구형", "12명"], ["융합형", "5명"], ["농어촌", "2명"], ["논술 일반형", "7명"]] },
+      { name:"식품영양학", admissions:[["탐구형", "10명"], ["융합형", "4명"], ["논술 일반형", "6명"]] },
+      { name:"시스템생명공학과", admissions:[["지역균형", "10명"], ["탐구형", "6명"], ["융합형", "4명"], ["논술 일반형", "6명"]] },
+      { name:"첨단소재공학과", admissions:[["지역균형", "8명"], ["탐구형", "15명"], ["성장형", "10명"], ["논술 창의형", "7명"]] }
+    ],
+    links: [["2027 모집요강", "https://admission.cau.ac.kr/detail.do?board_seq=3239&menuurl=n5%2FP1yX8Zyh%2Fvtvla1KeyA%3D%3D&pageNo=1"], ["다빈치캠퍼스", "https://www.cau.ac.kr/cms/FR_CON/index.do?MENU_ID=290&P_TAB_NO=2"], ["입학처", "https://admission.cau.ac.kr/"]]
   },
   {
     id: "mju", short: "명지대", name: "명지대학교", tone: "#57bdb5", focus: "명지인재면접 · 교과면접",
     summary: "명지인재면접은 서류 100%(4배수) 후 1단계 70% + 면접 30%. 교과면접은 교과 100%(5배수) 후 1단계 70% + 면접 30%입니다. 전 전형 수능최저 없음.",
     dates: ["원서 9.7 10:00 ~ 9.11 17:00", "교과면접 10.31", "명지인재 면접 11.28 ~ 11.29", "최초합격 12.9 15:00"],
+    majors: [
+      { name:"화학·에너지융합학부 화학나노학전공", admissions:[["학교장추천", "2명"], ["교과면접", "5명"], ["기회균형", "1명"], ["명지인재면접", "6명"], ["명지인재서류", "3명"], ["농어촌", "2명"]] },
+      { name:"융합바이오학부 식품영양학전공", admissions:[["학교장추천", "4명"], ["교과면접", "5명"], ["기회균형", "1명"], ["명지인재면접", "6명"], ["명지인재서류", "3명"], ["농어촌", "2명"]] },
+      { name:"융합바이오학부 시스템생명과학전공", admissions:[["학교장추천", "6명"], ["교과면접", "5명"], ["기회균형", "1명"], ["명지인재면접", "6명"], ["명지인재서류", "8명"], ["농어촌", "2명"]] },
+      { name:"화공신소재공학부 화학공학전공", admissions:[["학교장추천", "6명"], ["교과면접", "5명"], ["명지인재면접", "6명"], ["명지인재서류", "8명"], ["농어촌", "2명"]] }
+    ],
     links: [["2027 모집요강", "https://iphak.mju.ac.kr/pages/?b=B_1_1&bn=30136&m=read&p=9"], ["입학처", "https://iphak.mju.ac.kr/"], ["입시결과", "https://iphak.mju.ac.kr/pages/?b=B_1_1"]]
-  },
-  {
-    id: "hansung", short: "한성대", name: "한성대학교", tone: "#ef7d86", focus: "한성인재 · 지역균형",
-    summary: "한성인재는 학생부 전 영역 서류 100%로 선발하며 면접은 없습니다. 지역균형은 학교장 추천을 받아 교과 100%로 선발하고 수능최저가 없습니다.",
-    dates: ["원서 9.7 ~ 9.11", "한성인재 면접 없음", "수시 합격자 발표 12.18까지"],
-    links: [["수시 모집요강", "https://enter.hansung.ac.kr/?board=dataroom%25&boardId=nonscheduled%2Fdownload%25&m1=menu00%25&m2=sub02%25"], ["2026 경쟁률", "https://enter.hansung.ac.kr/?board=dataroom%25&boardId=nonscheduled%2Fdownload%25&m1=menu00%25&m2=sub02%25&tabName=competition%25"], ["입시결과", "https://enter.hansung.ac.kr/?board=entrance_data%2Fresult%25&m1=menu08%25&m2=sub02%25"]]
   }
 ];
 
@@ -104,39 +162,49 @@ const baseEvents = [
   ["2026-09-07", "konkuk", "건국대 원서접수 시작", "9.11까지 · KU자기추천 / KU논술우수자 지원 정보 최종 확인"],
   ["2026-09-07", "seoultech", "서울과기대 원서접수 시작", "09:00 시작 · 9.11 18:00 마감"],
   ["2026-09-07", "mju", "명지대 원서접수 시작", "10:00 시작 · 9.11 17:00 마감"],
-  ["2026-09-07", "hansung", "한성대 원서접수 기간", "9.7~9.11 · 지원 전 입학처 최종 모집요강 확인"],
   ["2026-09-07", "kookmin", "국민대 원서접수 시작", "10:00 시작 · 9.11 18:00 마감 · 국민프런티어 지원 정보 최종 확인"],
   ["2026-09-08", "cau", "중앙대 원서접수 시작", "10:00 시작 · 9.11 18:00 마감"],
-  ["2026-09-08", "ssu", "숭실대 원서접수 시작", "10:00 시작 · 9.11 18:00 마감"],
+  ["2026-09-08", "sejong", "세종대 원서접수 시작", "10:00 시작 · 9.11 18:00 마감"],
+  ["2026-09-08", "hufs", "한국외대 원서접수 시작", "10:00 시작 · 9.11 17:00 마감"],
+  ["2026-09-08", "cau-davinci", "중앙대 다빈치 원서접수 시작", "10:00 시작 · 9.11 18:00 마감"],
   ["2026-09-14", "mju", "명지대 서류제출 마감", "마감일 우체국 접수분까지 인정"],
-  ["2026-09-14", "ssu", "숭실대 서류 업로드 마감", "17:00 마감"],
+  ["2026-09-14", "sejong", "세종대 서류제출 마감", "18:00 마감 · 해당자 제출서류 확인"],
+  ["2026-09-14", "hufs", "한국외대 서류제출 마감", "17:00 마감 · 온라인 입력 및 서류 도착 기준 확인"],
   ["2026-09-15", "cau", "중앙대 서류제출 마감", "16:00 온라인 업로드 마감"],
+  ["2026-09-15", "cau-davinci", "중앙대 다빈치 서류제출 마감", "16:00 온라인 업로드 마감"],
   ["2026-09-17", "seoultech", "서울과기대 서류제출 마감", "17:00 · 등기우편 소인 유효"],
   ["2026-10-31", "mju", "명지대 교과면접", "인문캠퍼스(서울) 진행"],
+  ["2026-11-13", "sejong", "세종대 세종인재 면접형 1단계 발표", "17:00 이후 · 입학처에서 고사장과 입실시간 확인"],
+  ["2026-11-16", "hufs", "한국외대 면접형 1단계 발표", "입학처에서 면접 대상자와 고사장 확인"],
   ["2026-11-20", "seoultech", "서울과기대 1단계 발표", "14:00 · 학생부종합 전체"],
   ["2026-11-17", "kookmin", "국민대 국민프런티어 1단계 발표", "14:00 예정 · 2단계 고사장 안내"],
   ["2026-11-21", "konkuk", "건국대 KU논술우수자 논술", "고사시간은 모집단위별 수험생 안내 확인"],
   ["2026-11-21", "kookmin", "국민대 국민프런티어 자연계 면접", "지정시간 · 지능형ICT·융합바이오 등 자연계 모집단위"],
-  ["2026-11-21", "ssu", "숭실대 논술우수자 논술", "수험생 유의사항 11.17 공개"],
   ["2026-11-22", "kookmin", "국민대 국민프런티어 인문·예체능 면접", "경영대학 자연계 모집단위 포함 · 지정시간"],
+  ["2026-11-22", "sejong", "세종대 세종인재 면접형 자연계 면접", "화학과·생명시스템학부·스마트생명산업융합학과 등 지정시간"],
+  ["2026-11-22", "hufs", "한국외대 글로벌캠퍼스 면접", "학생부종합 면접형 · 모집단위별 지정시간 확인"],
   ["2026-11-23", "seoultech", "서울과기대 논술고사", "10:00 시작 예정"],
-  ["2026-11-23", "ssu", "숭실대 면접형 1단계 발표", "SSU미래인재·기회균형·SW우수자"],
   ["2026-11-26", "cau", "중앙대 탐구형 1단계 발표", "14:00"],
-  ["2026-11-27", "ssu", "숭실대 미래인재 면접", "면접형 · 모집단위별 안내 확인"],
+  ["2026-11-26", "cau-davinci", "중앙대 다빈치 탐구형 1단계 발표", "14:00"],
   ["2026-11-28", "seoultech", "서울과기대 학생부종합 면접", "학교생활우수자·창의융합인재·특수교육대상자"],
   ["2026-11-28", "mju", "명지대 명지인재면접", "자연캠퍼스 모집단위"],
   ["2026-11-29", "seoultech", "서울과기대 기회균형 면접", "기회균형 전체(특수교육대상자 제외)"],
   ["2026-11-29", "mju", "명지대 명지인재면접", "인문캠퍼스 모집단위"],
+  ["2026-11-29", "sejong", "세종대 자연·생명·공학계열 논술", "14:00~16:00 · 고사장과 입실시간 별도 확인"],
+  ["2026-11-29", "hufs", "한국외대 글로벌캠퍼스 자연계 논술", "15:00~16:30 · 모집단위별 고사장 확인"],
   ["2026-11-30", "ghent", "겐트대 우선지원 마감", "2027년 3월학기 우선지원 마감일"],
   ["2026-12-05", "cau", "중앙대 탐구형·성장형 면접", "12.5~12.6 · 전형/모집단위별 날짜 확인"],
+  ["2026-12-05", "cau-davinci", "중앙대 다빈치 생명공학대학 면접 1일차", "동물생명공학·식품공학 탐구형 면접"],
   ["2026-12-05", "konkuk", "건국대 KU자기추천 면접 1일차", "이과·공과·일부 사회과학·사범계열 등"],
+  ["2026-12-06", "cau-davinci", "중앙대 다빈치 생명공학대학 면접 2일차", "식물생명공학·시스템생명공학 탐구형 면접"],
   ["2026-12-06", "konkuk", "건국대 KU자기추천 면접 2일차", "문과·건축·경영·일부 사회과학·수의·KU자유전공 등"],
   ["2026-12-09", "mju", "명지대 최초합격 발표", "15:00"],
   ["2026-12-18", "cau", "중앙대 최초합격 발표", "14:00"],
+  ["2026-12-18", "cau-davinci", "중앙대 다빈치 최초합격 발표", "14:00"],
   ["2026-12-18", "seoultech", "서울과기대 최초합격 발표", "14:00 · 실기 외 전체"],
   ["2026-12-18", "kookmin", "국민대 최초합격 발표", "17:00 예정"],
-  ["2026-12-18", "ssu", "숭실대 최초합격 발표", "10:00"],
-  ["2026-12-18", "hansung", "한성대 수시 합격 발표 기한", "한성인재는 면접 없이 서류 100%"],
+  ["2026-12-18", "sejong", "세종대 최초합격 발표", "17:00 이후"],
+  ["2026-12-18", "hufs", "한국외대 최초합격 발표", "14:00"],
   ["2026-12-21", "personal", "수시 최초합격자 문서등록", "대학별 등록 마감시각 확인 · 12.23까지"],
   ["2026-12-31", "ghent", "겐트대 온라인 입학시험 응시 기한", "수학·화학 20문항 중 14점 이상 · 현행 시험제도 변경 가능성 확인"],
   ["2027-01-31", "ghent", "겐트대 2027년 3월학기 최종지원 마감", "조기마감 가능 · 원서 제출 후 결과 통보까지 약 4~6주"]
@@ -241,7 +309,20 @@ function renderDday() { document.querySelector("#ghentDdayCount").textContent = 
 function renderInterview() { document.querySelector("#interviewGuide").innerHTML = interviewGuide.map(([n,t,d]) => `<article class="guide-card"><span>${n}</span><div><h3>${t}</h3><p>${d}</p></div></article>`).join(""); }
 function renderEssay() { document.querySelector("#essaySteps").innerHTML = essaySteps.map(([n,t,d]) => `<article class="essay-step"><span>${n}</span><div><h3>${t}</h3><p>${d}</p></div></article>`).join(""); document.querySelector("#essayLinks").innerHTML = essayLinks.map(([l,h]) => `<a href="${h}" target="_blank" rel="noreferrer">${l}<span>↗</span></a>`).join(""); }
 function renderScores() { const saved = store.get("haeun-scores-v2", {}); document.querySelector("#scoreGrid").innerHTML = scoreSubjects.map((s) => `<label class="score-card"><span>${s}</span><select data-score="${s}">${[1,2,3,4,5].map((g) => `<option value="${g}" ${String(g) === (saved[s] || "2") ? "selected" : ""}>${g}등급</option>`).join("")}</select></label>`).join(""); }
-function renderSchools() { document.querySelector("#schoolGrid").innerHTML = schools.map((s) => `<article class="school-card ${s.wide ? "school-card-wide" : ""}" style="--tone:${s.tone}"><div class="school-head"><div><span class="school-kicker">${s.short}</span><h3>${s.name}</h3><p>${s.focus}</p></div><span class="dot"></span></div><p class="school-summary">${s.summary}</p><ul>${s.dates.map((d) => `<li>${d}</li>`).join("")}</ul>${s.requirements ? `<div class="school-requirements">${s.requirements.map((group) => `<section><h4>${group.title}</h4><ul>${group.items.map((item) => `<li>${item}</li>`).join("")}</ul></section>`).join("")}</div>` : ""}<div class="link-row">${s.links.map(([l,h]) => `<a href="${h}" target="_blank" rel="noreferrer">${l}</a>`).join("")}</div></article>`).join(""); }
+function renderSchools() {
+  document.querySelector("#schoolGrid").innerHTML = schools.map((s) => `<article class="school-card ${s.wide ? "school-card-wide" : ""}" style="--tone:${s.tone}">
+    <div class="school-head"><div><span class="school-kicker">${escapeHtml(s.short)}</span><h3>${escapeHtml(s.name)}</h3><p>${escapeHtml(s.focus)}</p></div><span class="dot"></span></div>
+    <p class="school-summary">${escapeHtml(s.summary)}</p>
+    <ul class="school-dates">${s.dates.map((d) => `<li>${escapeHtml(d)}</li>`).join("")}</ul>
+    ${s.majors ? `<section class="school-majors" aria-label="${escapeHtml(s.short)} 관심 학과 2027 모집인원">
+      <div class="school-majors-heading"><h4>관심 학과 · 2027 모집인원</h4><span>전형별 인원</span></div>
+      <div class="major-list">${s.majors.map((major) => `<div class="major-row"><div><strong>${escapeHtml(major.name)}</strong>${major.note ? `<small>${escapeHtml(major.note)}</small>` : ""}</div><div class="major-counts">${major.admissions.map(([type,count]) => `<span><b>${escapeHtml(type)}</b>${escapeHtml(count)}</span>`).join("")}</div></div>`).join("")}</div>
+      <p class="major-source-note">2027학년도 수시 모집요강 기준 · 최종 지원 전 원문 재확인</p>
+    </section>` : ""}
+    ${s.requirements ? `<div class="school-requirements">${s.requirements.map((group) => `<section><h4>${escapeHtml(group.title)}</h4><ul>${group.items.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul></section>`).join("")}</div>` : ""}
+    <div class="link-row">${s.links.map(([l,h]) => `<a href="${h}" target="_blank" rel="noreferrer">${escapeHtml(l)}</a>`).join("")}</div>
+  </article>`).join("");
+}
 function renderFilters() { document.querySelector("#schoolFilters").innerHTML = `<button class="filter-button active" data-school="all">전체</button>${schools.map((s) => `<button class="filter-button" style="--tone:${s.tone}" data-school="${s.id}"><span class="color-swatch" aria-hidden="true"></span>${s.short}</button>`).join("")}`; document.querySelector("#eventSchool").innerHTML = `${schools.map((s) => `<option value="${s.id}">${s.short}</option>`).join("")}<option value="personal">개인 공통</option>`; }
 function events() { return [...baseEvents.map(([date,schoolId,title,memo], index) => ({ id:`base-${index}`, date, school:schoolId, title, memo, custom:false })), ...customEvents].sort((a,b) => a.date.localeCompare(b.date)); }
 function eventCategory(title) {
